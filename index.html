@@ -669,7 +669,7 @@ const DIAS=[
 const ID7={id:'D7',label:'Día 6–7 — Refuerzo específico',secs:[{n:'Refuerzo Focalizado',items:['¿El colaborador consolidó los procesos con mayor debilidad identificados en D5?','¿Demostró mejora medible en el proceso focalizado?']}]};
 
 let instrReady=false,iMode='masivo',iAC=0;
-let iD={instructor:'',pais:'Venezuela',fe:'',feIni:'',feFin:'',grupo:'5 días',c1:'',c2:'',c3:'',ans:{},obs:{}};
+let iD={instructor:'',cedInstr:'',pais:'Venezuela',fe:'',feIni:'',feFin:'',grupo:'5 días',c1:'',c1c:'',c2:'',c2c:'',c3:'',c3c:'',ans:{},obs:{}};
 
 function iKey(did,si,ii,ci){return `${did}_${si}_${ii}_${ci}`;}
 function iDias(){
@@ -695,7 +695,10 @@ function renderInstructor(){
   let h=`<div class="card">
     <div class="lbl" style="margin-bottom:11px">Datos del instructor y grupo</div>
     <div class="row2">
-      <div class="col"><label class="lbl">Instructor *</label><input value="${esc(iD.instructor)}" placeholder="Nombre del instructor" oninput="iD.instructor=this.value;renderInstructor()"></div>
+      <div class="col"><label class="lbl">Instructor *</label><input value="${esc(iD.instructor)}" placeholder="Nombre del instructor" oninput="iD.instructor=this.value"></div>
+      <div class="col"><label class="lbl">Cédula o DNI instructor</label><input value="${esc(iD.cedInstr)}" placeholder="Cédula del instructor" oninput="iD.cedInstr=this.value"></div>
+    </div>
+    <div class="row2">
       <div class="col"><label class="lbl">País *</label>
         <select onchange="iD.pais=this.value;iD.fe='';renderInstructor()">
           <option value="Venezuela" ${(iD.pais||'Venezuela')==='Venezuela'?'selected':''}>🇻🇪 Venezuela</option>
@@ -726,11 +729,11 @@ function renderInstructor(){
       <div class="lbl" style="margin-bottom:8px">Colaboradores del grupo</div>`;
 
   if(iMode==='masivo'){
-    h+=`<input value="${esc(iD.c1)}" placeholder="Colaborador 1 — Nombre completo" style="margin-bottom:5px" oninput="iD.c1=this.value;renderInstructor()">
-        <input value="${esc(iD.c2)}" placeholder="Colaborador 2 (opcional)" style="margin-bottom:5px" oninput="iD.c2=this.value;renderInstructor()">
-        <input value="${esc(iD.c3)}" placeholder="Colaborador 3 (opcional)" oninput="iD.c3=this.value;renderInstructor()">`;
+    h+=`<div class="row2" style="margin-top:0;margin-bottom:5px"><div class="col"><input value="${esc(iD.c1)}" placeholder="Colaborador 1 — Nombre" oninput="iD.c1=this.value" onchange="renderInstructor()"></div><div class="col" style="flex:0 1 130px"><input value="${esc(iD.c1c)}" placeholder="Cédula/DNI" oninput="iD.c1c=this.value"></div></div>
+        <div class="row2" style="margin-top:0;margin-bottom:5px"><div class="col"><input value="${esc(iD.c2)}" placeholder="Colaborador 2 (opcional)" oninput="iD.c2=this.value" onchange="renderInstructor()"></div><div class="col" style="flex:0 1 130px"><input value="${esc(iD.c2c)}" placeholder="Cédula/DNI" oninput="iD.c2c=this.value"></div></div>
+        <div class="row2" style="margin-top:0"><div class="col"><input value="${esc(iD.c3)}" placeholder="Colaborador 3 (opcional)" oninput="iD.c3=this.value" onchange="renderInstructor()"></div><div class="col" style="flex:0 1 130px"><input value="${esc(iD.c3c)}" placeholder="Cédula/DNI" oninput="iD.c3c=this.value"></div></div>`;
   } else {
-    h+=`<input value="${esc(iD['c'+(iAC+1)])}" placeholder="Nombre del colaborador" oninput="iD['c'+(iAC+1)]=this.value;renderInstructor()">`;
+    h+=`<div class="row2" style="margin-top:0"><div class="col"><input value="${esc(iD['c'+(iAC+1)])}" placeholder="Nombre del colaborador" oninput="iD['c'+(iAC+1)]=this.value" onchange="renderInstructor()"></div><div class="col" style="flex:0 1 130px"><input value="${esc(iD['c'+(iAC+1)+'c'])}" placeholder="Cédula/DNI" oninput="iD['c'+(iAC+1)+'c']=this.value"></div></div>`;
   }
   h+=`</div></div>
 
@@ -827,7 +830,7 @@ async function submitInstr(){
   const btn=document.querySelector('#instr-body .btn-submit');if(btn){btn.disabled=true;btn.innerHTML='<i class="ti ti-loader-2" style="animation:spin .8s linear infinite;font-size:14px"></i> Guardando...';}
   await postData({type:'instructor',data:{...iD,submittedBy:CU?.correo}});
   alert('✅ Checklist del instructor guardado correctamente.');
-  iD={instructor:'',pais:'Venezuela',fe:'',feIni:'',feFin:'',grupo:'5 días',c1:'',c2:'',c3:'',ans:{},obs:{}};
+  iD={instructor:'',cedInstr:'',pais:'Venezuela',fe:'',feIni:'',feFin:'',grupo:'5 días',c1:'',c1c:'',c2:'',c2c:'',c3:'',c3c:'',ans:{},obs:{}};
   renderInstructor();
 }
 
@@ -843,7 +846,7 @@ const GREAS=[
   {area:'Competencias Comportamentales',items:['Orientación al cliente: interactúa amable, responde con prontitud','Orientación a resultados: busca mejorar, evita retrabajos','Sentido de urgencia: actúa ante imprevistos, diferencia urgente vs. importante','Orden y detalle: mantiene orden en su espacio, verifica su trabajo','Energía y conciencia de equipo: mantiene ritmo constante, demuestra entusiasmo']}
 ];
 let gerReady=false,gMode='individual',gAC=0;
-let gD={gerente:'',supervisor:'',pais:'Venezuela',c1:'',c2:'',c3:'',tienda:'',dias:'5',fechaEval:'',ans:{},obs:{},rec:'',plan:''};
+let gD={gerente:'',cedGer:'',gerenteArea:'',pais:'Venezuela',supervisor:'',c1:'',c1c:'',c2:'',c2c:'',c3:'',c3c:'',tienda:'',dias:'5',fechaEval:'',ans:{},obs:{},rec:'',plan:''};
 
 function gKey(ai,ii,ci){return`${ai}_${ii}_${ci}`;}
 function gCnt(){
@@ -860,8 +863,12 @@ function renderGerente(){
   let h=`<div class="card">
     <div class="lbl" style="margin-bottom:11px">Datos de la evaluación</div>
     <div class="row2">
-      <div class="col"><label class="lbl">Gerente de Tienda *</label><input value="${esc(gD.gerente)}" placeholder="Jorge Díaz" oninput="gD.gerente=this.value;gUpBtn()"></div>
-      <div class="col"><label class="lbl">Supervisor inmediato</label><input value="${esc(gD.supervisor)}" placeholder="Paola Ballestero" oninput="gD.supervisor=this.value"></div>
+      <div class="col"><label class="lbl">Gerente de Tienda *</label><input value="${esc(gD.gerente)}" placeholder="Nombre del gerente de tienda" oninput="gD.gerente=this.value;gUpBtn()"></div>
+      <div class="col"><label class="lbl">Cédula o DNI gerente</label><input value="${esc(gD.cedGer)}" placeholder="Cédula del gerente" oninput="gD.cedGer=this.value"></div>
+    </div>
+    <div class="row2">
+      <div class="col"><label class="lbl">Gerente de Área</label><input value="${esc(gD.gerenteArea)}" placeholder="Nombre del gerente de área" oninput="gD.gerenteArea=this.value"></div>
+      <div class="col"><label class="lbl">Supervisor inmediato</label><input value="${esc(gD.supervisor)}" placeholder="Supervisor" oninput="gD.supervisor=this.value"></div>
     </div>
     <div class="row2">
       <div class="col"><label class="lbl">País *</label>
@@ -896,11 +903,11 @@ function renderGerente(){
       <div class="lbl" style="margin-bottom:8px">Colaboradores a evaluar</div>`;
 
   if(gMode==='masivo'){
-    h+=`<input value="${esc(gD.c1)}" placeholder="Colaborador 1 — Nombre completo" style="margin-bottom:5px" oninput="gD.c1=this.value;renderGerente()">
-        <input value="${esc(gD.c2)}" placeholder="Colaborador 2 (opcional)" style="margin-bottom:5px" oninput="gD.c2=this.value;renderGerente()">
-        <input value="${esc(gD.c3)}" placeholder="Colaborador 3 (opcional)" oninput="gD.c3=this.value;renderGerente()">`;
+    h+=`<div class="row2" style="margin-top:0;margin-bottom:5px"><div class="col"><input value="${esc(gD.c1)}" placeholder="Colaborador 1 — Nombre" oninput="gD.c1=this.value" onchange="renderGerente()"></div><div class="col" style="flex:0 1 130px"><input value="${esc(gD.c1c)}" placeholder="Cédula/DNI" oninput="gD.c1c=this.value"></div></div>
+        <div class="row2" style="margin-top:0;margin-bottom:5px"><div class="col"><input value="${esc(gD.c2)}" placeholder="Colaborador 2 (opcional)" oninput="gD.c2=this.value" onchange="renderGerente()"></div><div class="col" style="flex:0 1 130px"><input value="${esc(gD.c2c)}" placeholder="Cédula/DNI" oninput="gD.c2c=this.value"></div></div>
+        <div class="row2" style="margin-top:0"><div class="col"><input value="${esc(gD.c3)}" placeholder="Colaborador 3 (opcional)" oninput="gD.c3=this.value" onchange="renderGerente()"></div><div class="col" style="flex:0 1 130px"><input value="${esc(gD.c3c)}" placeholder="Cédula/DNI" oninput="gD.c3c=this.value"></div></div>`;
   } else {
-    h+=`<input value="${esc(gD['c'+(gAC+1)])}" placeholder="Nombre del colaborador" oninput="gD['c'+(gAC+1)]=this.value;renderGerente()">`;
+    h+=`<div class="row2" style="margin-top:0"><div class="col"><input value="${esc(gD['c'+(gAC+1)])}" placeholder="Nombre del colaborador" oninput="gD['c'+(gAC+1)]=this.value" onchange="renderGerente()"></div><div class="col" style="flex:0 1 130px"><input value="${esc(gD['c'+(gAC+1)+'c'])}" placeholder="Cédula/DNI" oninput="gD['c'+(gAC+1)+'c']=this.value"></div></div>`;
   }
   h+=`</div></div>
 
@@ -1018,7 +1025,7 @@ async function submitGer(){
   const {dom,pro,nod}=gCnt();
   await postData({type:'gerente',data:{...gD,domina:dom,proceso:pro,noDomina:nod,submittedBy:CU?.correo}});
   alert('✅ Evaluación del gerente guardada correctamente.');
-  gD={gerente:'',supervisor:'',pais:'Venezuela',c1:'',c2:'',c3:'',tienda:'',dias:'5',fechaEval:'',ans:{},obs:{},rec:'',plan:''};renderGerente();
+  gD={gerente:'',cedGer:'',gerenteArea:'',pais:'Venezuela',supervisor:'',c1:'',c1c:'',c2:'',c2c:'',c3:'',c3c:'',tienda:'',dias:'5',fechaEval:'',ans:{},obs:{},rec:'',plan:''};renderGerente();
 }
 
 // ══════════════════════════════════════════════
