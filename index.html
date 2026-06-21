@@ -8,360 +8,436 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
-:root{--n:#001E62;--b:#418FDE;--g:#1D9E75;--a:#EF9F27;--r:#E24B4A;--mid:#888780;--gg:#639922}
+:root{--n:#001E62;--b:#418FDE;--g:#1D9E75;--a:#EF9F27;--r:#E24B4A}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:'Montserrat',sans-serif;background:#F1F5F9;color:#1E293B;min-height:100vh}
-.screen{display:none}.screen.on{display:block}
-.page{max-width:700px;margin:0 auto;padding:16px 14px 80px}
-
+.screen{display:none!important}.screen.on{display:block!important}
+.page{max-width:680px;margin:0 auto;padding:16px 14px 84px}
 /* TOPBAR */
-.topbar{background:var(--n);padding:12px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50;box-shadow:0 2px 8px rgba(0,30,98,.25)}
-.topbar .logo-w{background:white;border-radius:8px;padding:4px 6px;flex-shrink:0}
-.topbar .logo-w img{height:36px;width:auto;display:block}
-.topbar h1{font-size:15px;font-weight:700;color:white;line-height:1.2}
+.topbar{background:var(--n);padding:11px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:50;box-shadow:0 2px 6px rgba(0,30,98,.2)}
+.logo-w{background:white;border-radius:7px;padding:4px 6px;flex-shrink:0}
+.logo-w img{height:34px;width:auto;display:block}
+.topbar h1{font-size:14px;font-weight:700;color:white;line-height:1.2}
 .topbar .sub{font-size:10px;color:#93C5FD;margin-top:1px}
-.btn-cfg{background:rgba(255,255,255,.12);border:none;color:white;border-radius:7px;padding:6px 8px;cursor:pointer}
-
+.tb-btn{background:rgba(255,255,255,.12);border:none;color:white;border-radius:7px;padding:7px 8px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 /* BOTTOM NAV */
 #bnav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #E2E8F0;z-index:100;padding-bottom:env(safe-area-inset-bottom)}
 .bni{display:flex;justify-content:space-around;padding:4px 0}
-.bni button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px 2px;cursor:pointer;border:none;background:none;font-family:'Montserrat',sans-serif}
-.bni button i{font-size:20px;color:#94A3B8;transition:color .15s}
-.bni button span{font-size:9px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:.04em}
+.bni button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px 2px;cursor:pointer;border:none;background:none;font-family:'Montserrat',sans-serif;min-width:0}
+.bni button i{font-size:19px;color:#94A3B8;transition:color .15s}
+.bni button span{font-size:8px;font-weight:600;color:#94A3B8;letter-spacing:.03em;white-space:nowrap}
 .bni button.act i,.bni button.act span{color:var(--n)}
-
 /* CARDS */
-.card{background:white;border-radius:12px;border:1px solid #E2E8F0;padding:16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-.mod-card{background:white;border-radius:14px;border:1px solid #E2E8F0;padding:18px;cursor:pointer;transition:all .2s;box-shadow:0 1px 3px rgba(0,0,0,.04);display:flex;align-items:center;gap:14px;margin-bottom:12px}
-.mod-card:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,30,98,.1)}
-.mod-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.mod-icon i{font-size:22px}
-
+.card{background:white;border-radius:12px;border:1px solid #E2E8F0;padding:15px;margin-bottom:12px}
+.mod-card{background:white;border-radius:13px;border:1px solid #E2E8F0;padding:16px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:13px;margin-bottom:10px}
+.mod-card:hover{box-shadow:0 3px 10px rgba(0,30,98,.1);transform:translateY(-1px)}
+.mod-icon{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mod-icon i{font-size:21px}
 /* FORMS */
-input,select,textarea{font-family:'Montserrat',sans-serif;width:100%;padding:9px 12px;border:1.5px solid #E2E8F0;border-radius:8px;font-size:13px;color:#1E293B;background:white;outline:none;transition:border .15s}
+input,select,textarea{font-family:'Montserrat',sans-serif;width:100%;padding:8px 11px;border:1.5px solid #E2E8F0;border-radius:8px;font-size:13px;color:#1E293B;background:white;outline:none;transition:border .15s}
 input:focus,select:focus,textarea:focus{border-color:var(--b)}
-textarea{resize:vertical;min-height:60px}
+textarea{resize:vertical;min-height:58px}
 .lbl{display:block;font-size:10px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
-.row2{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-.col{flex:1 1 160px}
-.sec-hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.sec-num{width:26px;height:26px;border-radius:50%;background:var(--n);color:white;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.row2{display:flex;gap:9px;flex-wrap:wrap;margin-top:9px}
+.col{flex:1 1 150px}
+.sec-hdr{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.sec-num{width:24px;height:24px;border-radius:50%;background:var(--n);color:white;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .sec-nm{font-size:13px;font-weight:700;color:#1E293B}
 .sec-ln{flex:1;height:.5px;background:#E2E8F0}
-
-/* SUBMIT BUTTON */
+/* BUTTONS */
 .btn-submit{width:100%;padding:13px;background:var(--n);color:white;border:none;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s}
 .btn-submit:hover:not(:disabled){background:#001850}
 .btn-submit:disabled{opacity:.4;cursor:not-allowed}
-.btn-sec{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Montserrat',sans-serif;border:1.5px solid var(--n);color:var(--n);background:white;transition:background .15s}
+.btn-sec{display:inline-flex;align-items:center;gap:5px;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Montserrat',sans-serif;border:1.5px solid var(--n);color:var(--n);background:white;transition:background .15s}
 .btn-sec:hover{background:#F8FAFC}
-
-/* SURVEY SCALE */
-.q-card{background:white;border-radius:10px;border:1px solid #E2E8F0;padding:12px 14px;margin-bottom:8px;border-left:3px solid #E2E8F0;transition:border-color .2s}
+/* SCALE */
+.q-card{background:white;border-radius:10px;border:1px solid #E2E8F0;padding:12px 13px;margin-bottom:8px;border-left:3px solid #E2E8F0;transition:border-color .2s}
 .q-card.ans{border-left-color:var(--b)}
-.q-text{font-size:12.5px;color:#334155;line-height:1.6;margin-bottom:10px}
-.q-num{color:var(--b);font-weight:700;margin-right:4px}
+.q-text{font-size:12px;color:#334155;line-height:1.6;margin-bottom:9px}
+.q-num{color:var(--b);font-weight:700;margin-right:3px}
 .scale-row{display:flex;gap:5px}
-.sbtn{flex:1;height:40px;border-radius:7px;border:1.5px solid #E2E8F0;background:#F8FAFC;color:#64748B;font-size:14px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;transition:all .15s}
-.send{display:flex;justify-content:space-between;margin-top:4px}
+.sbtn{flex:1;height:39px;border-radius:7px;border:1.5px solid #E2E8F0;background:#F8FAFC;color:#64748B;font-size:14px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;transition:all .15s}
+.send{display:flex;justify-content:space-between;margin-top:3px}
 .send span{font-size:9px;color:#94A3B8}
-.scale-leg{background:white;border:1px solid #E2E8F0;border-radius:10px;padding:9px 13px;margin-bottom:14px;display:flex;gap:8px;flex-wrap:wrap}
+.scale-leg{background:white;border:1px solid #E2E8F0;border-radius:9px;padding:8px 12px;margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap}
 .leg-i{display:flex;align-items:center;gap:4px}
-.leg-d{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white}
+.leg-d{width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:white}
 .leg-i span{font-size:10px;color:#64748B}
-
-/* CHECKLIST TOGGLES */
-.tgl-row{display:flex;gap:4px;margin-top:3px}
-.tgl{flex:1;padding:6px 2px;border-radius:7px;border:1.5px solid #E2E8F0;background:#F8FAFC;color:#64748B;font-size:10px;font-weight:600;cursor:pointer;font-family:'Montserrat',sans-serif;text-align:center;transition:all .15s}
-.tgl.si.on{background:var(--g);color:white;border-color:var(--g)}
-.tgl.ay.on{background:var(--a);color:white;border-color:var(--a)}
-.tgl.no.on{background:var(--r);color:white;border-color:var(--r)}
-.tgl.dom.on{background:var(--g);color:white;border-color:var(--g)}
-.tgl.pro.on{background:var(--a);color:white;border-color:var(--a)}
-.tgl.nod.on{background:var(--r);color:white;border-color:var(--r)}
-.item-card{padding:11px 12px;border-bottom:1px solid #F1F5F9;background:white}
+/* CHECKLIST SELECT */
+.chk-sel{font-family:'Montserrat',sans-serif;font-size:11px;padding:6px 8px;border:1.5px solid #E2E8F0;border-radius:7px;background:white;color:#334155;cursor:pointer;outline:none;width:100%}
+.chk-sel.v-si{border-color:var(--g);background:#F0FDF4;color:#15803D;font-weight:600}
+.chk-sel.v-ay{border-color:var(--a);background:#FFF7ED;color:#92400E;font-weight:600}
+.chk-sel.v-no{border-color:var(--r);background:#FEF2F2;color:#991B1B;font-weight:600}
+.chk-sel.v-dom{border-color:var(--g);background:#F0FDF4;color:#15803D;font-weight:600}
+.chk-sel.v-pro{border-color:var(--a);background:#FFF7ED;color:#92400E;font-weight:600}
+.chk-sel.v-nod{border-color:var(--r);background:#FEF2F2;color:#991B1B;font-weight:600}
+.colab-sel-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.c-lbl{font-size:10px;color:#94A3B8;font-weight:600;min-width:68px;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* ACCORDION */
+.acc-h{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--n);color:white;border-radius:9px;cursor:pointer;margin-bottom:2px}
+.acc-h.done{background:var(--g)}
+.acc-h span{font-size:12px;font-weight:600}
+.acc-h .badge{background:rgba(255,255,255,.15);border-radius:20px;padding:2px 8px;font-size:10px;font-weight:600}
+.acc-body{border:1px solid #E2E8F0;border-top:none;border-radius:0 0 9px 9px;overflow:hidden;display:none}
+.acc-body.open{display:block}
+.sec-tag{font-size:10px;font-weight:700;color:var(--b);text-transform:uppercase;letter-spacing:.05em;padding:7px 12px 3px;background:#F8FAFC;border-bottom:1px solid #F1F5F9}
+.item-card{padding:10px 12px;border-bottom:1px solid #F1F5F9;background:white}
 .item-card:last-child{border-bottom:none}
-.item-txt{font-size:12px;color:#334155;line-height:1.55;margin-bottom:8px}
-.c-label{font-size:10px;color:#94A3B8;font-weight:600;min-width:68px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.c-row{display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.item-txt{font-size:11.5px;color:#334155;line-height:1.55;margin-bottom:6px}
 .obs-link{font-size:10px;color:var(--b);cursor:pointer;margin-top:4px;display:inline-block}
 .obs-box{display:none;margin-top:5px}
-
-/* ACCORDION */
-.acc-h{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;background:var(--n);color:white;border-radius:10px;cursor:pointer;margin-bottom:2px;transition:background .15s}
-.acc-h.done{background:var(--g)}
-.acc-h span{font-size:13px;font-weight:600}
-.acc-h .badge{background:rgba(255,255,255,.15);border-radius:20px;padding:2px 8px;font-size:10px;font-weight:600}
-.acc-body{border:1px solid #E2E8F0;border-top:none;border-radius:0 0 10px 10px;overflow:hidden;display:none}
-.acc-body.open{display:block}
-.sec-tag{font-size:10px;font-weight:700;color:var(--b);text-transform:uppercase;letter-spacing:.05em;padding:8px 12px 3px;background:#F8FAFC;border-bottom:1px solid #F1F5F9}
-
 /* MODE TOGGLE */
-.mode-toggle{display:flex;gap:6px;margin-bottom:14px}
-.mtgl{flex:1;padding:9px;border-radius:8px;border:1.5px solid #E2E8F0;background:white;color:#64748B;font-size:12px;font-weight:600;cursor:pointer;font-family:'Montserrat',sans-serif;transition:all .15s;text-align:center}
+.mtgl-row{display:flex;gap:6px;margin-bottom:12px}
+.mtgl{flex:1;padding:8px;border-radius:7px;border:1.5px solid #E2E8F0;background:white;color:#64748B;font-size:11px;font-weight:600;cursor:pointer;font-family:'Montserrat',sans-serif;text-align:center}
 .mtgl.on{background:var(--n);color:white;border-color:var(--n)}
-
-/* COLAB TABS */
-.ctabs{display:flex;gap:4px;margin-bottom:12px}
-.ctab{flex:1;padding:8px 6px;border-radius:8px;border:1.5px solid #E2E8F0;background:white;color:#64748B;font-size:11px;font-weight:600;cursor:pointer;text-align:center;font-family:'Montserrat',sans-serif;transition:all .15s;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ctab.on{background:var(--n);color:white;border-color:var(--n)}
-
-/* PROGRESS BAR */
-.pbar-w{height:4px;background:rgba(255,255,255,.2);border-radius:2px;margin-top:10px}
+/* PROGRESS */
+.pbar-w{width:76px;height:4px;background:rgba(255,255,255,.2);border-radius:2px;margin-top:9px}
 .pbar-f{height:4px;background:var(--b);border-radius:2px;transition:width .3s}
-.pbar-lbl{font-size:9px;color:rgba(255,255,255,.45);margin-top:3px;text-align:right}
-
+.pbar-l{font-size:9px;color:rgba(255,255,255,.4);margin-top:2px;text-align:right}
 /* HINT */
-.hint{min-height:26px;text-align:center;margin-bottom:8px}
+.hint{min-height:24px;text-align:center;margin-bottom:8px}
 .hint-txt{font-size:10px;color:#D97706;background:#FEF3C7;border-radius:6px;padding:4px 10px;display:inline-block;border:1px solid #FDE68A}
-
-/* DASHBOARD */
-.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
-.stat-card{background:white;border-radius:12px;border:1px solid #E2E8F0;padding:16px;text-align:center}
-.stat-num{font-size:32px;font-weight:700;line-height:1;margin:4px 0}
-.stat-lbl{font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.06em}
-.chart-card{background:white;border-radius:12px;border:1px solid #E2E8F0;padding:16px;margin-bottom:12px}
-.chart-ttl{font-size:13px;font-weight:700;color:#1E293B;margin-bottom:12px;display:flex;align-items:center;gap:6px}
-
-/* CONFIG BANNER */
-#cfg-banner{background:#FEF3C7;border-bottom:1px solid #FDE68A;padding:10px 16px;font-size:12px;color:#92400E;display:flex;align-items:center;justify-content:space-between;gap:10px}
-#cfg-screen{position:fixed;inset:0;background:#F1F5F9;z-index:200;display:flex;align-items:center;justify-content:center;padding:24px}
-.cfg-card{background:white;border-radius:16px;border:1px solid #E2E8F0;padding:28px 24px;max-width:480px;width:100%}
-
-/* SUCCESS */
-.success{text-align:center;padding:28px 16px}
-.suc-icon{width:68px;height:68px;background:var(--g);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
-.suc-icon i{color:white;font-size:32px}
-
-/* SUM GRID */
-.sum3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:12px 0}
-.sum3-c{border-radius:10px;padding:11px;text-align:center}
-.sum3-n{font-size:22px;font-weight:700}
+/* SUMMARY 3 */
+.sum3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin:10px 0}
+.sum3-c{border-radius:9px;padding:10px;text-align:center}
+.sum3-n{font-size:20px;font-weight:700}
 .sum3-l{font-size:9px;font-weight:600;margin-top:2px}
-
-/* RESULT BARS */
-.res-bar{margin-bottom:10px}
-.res-hdr{display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;color:#1E293B}
-.bar-track{height:7px;background:#F1F5F9;border-radius:4px;overflow:hidden}
-.bar-fill{height:7px;border-radius:4px}
-
+/* DASHBOARD */
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:14px}
+.stat-card{background:white;border-radius:11px;border:1px solid #E2E8F0;padding:14px;text-align:center}
+.stat-num{font-size:30px;font-weight:700;line-height:1;margin:3px 0}
+.stat-lbl{font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.06em}
+.chart-card{background:white;border-radius:11px;border:1px solid #E2E8F0;padding:15px;margin-bottom:11px}
+.chart-ttl{font-size:13px;font-weight:700;color:#1E293B;margin-bottom:11px;display:flex;align-items:center;gap:6px}
 /* TABLE */
 .tbl{width:100%;border-collapse:collapse;font-size:11px}
-.tbl th{background:#F8FAFC;color:#64748B;font-weight:600;padding:8px 10px;text-align:left;border-bottom:1px solid #E2E8F0;font-size:10px;text-transform:uppercase;letter-spacing:.04em}
-.tbl td{padding:8px 10px;border-bottom:1px solid #F1F5F9;color:#334155}
+.tbl th{background:#F8FAFC;color:#64748B;font-weight:600;padding:7px 9px;text-align:left;border-bottom:1px solid #E2E8F0;font-size:10px;text-transform:uppercase;letter-spacing:.03em}
+.tbl td{padding:7px 9px;border-bottom:1px solid #F1F5F9;color:#334155}
 .tbl tr:hover td{background:#F8FAFC}
 .badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600}
-
+/* GUIDE */
+.guide-sec{margin-bottom:20px}
+.guide-ttl{font-size:14px;font-weight:700;color:var(--n);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;gap:6px}
+.guide-row{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid #F1F5F9;font-size:12px}
+.guide-row:last-child{border-bottom:none}
+.guide-key{font-weight:600;color:#334155;min-width:120px;flex-shrink:0}
+.guide-val{color:#64748B;line-height:1.5}
+/* LOGIN */
+#s-login{background:linear-gradient(150deg,var(--n),#0a3580);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.login-card{background:white;border-radius:18px;padding:28px 24px;max-width:380px;width:100%;box-shadow:0 8px 32px rgba(0,30,98,.25)}
+/* ROLE BADGE */
+.role-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:12px;background:rgba(255,255,255,.15);color:rgba(255,255,255,.85)}
+/* CONFIG */
+#s-config{background:var(--n);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.cfg-card{background:white;border-radius:16px;padding:26px 22px;max-width:440px;width:100%}
+/* RES BARS */
+.res-bar{margin-bottom:9px}
+.res-hdr{display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px}
+.bar-track{height:6px;background:#F1F5F9;border-radius:3px;overflow:hidden}
+.bar-fill{height:6px;border-radius:3px}
+/* SUCCESS */
+.success{text-align:center;padding:28px 14px}
+.suc-icon{width:65px;height:65px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 13px}
+/* CHK GROUP INFO */
+.info-pill{display:inline-flex;align-items:center;gap:4px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:6px;padding:4px 10px;font-size:11px;color:#1D4ED8;margin-bottom:10px}
+/* NAV BREADCRUMB */
+.nav-hist{display:flex;align-items:center;gap:4px;font-size:10px;color:rgba(255,255,255,.5);margin-top:1px}
+.nav-hist span{color:rgba(255,255,255,.35)}
 @keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
 
-<!-- ═══ CONFIG SCREEN ═══════════════════════════════════════════════ -->
-<div id="cfg-screen">
+<!-- ─── CONFIG ──────────────────────────── -->
+<div id="s-config" class="screen">
   <div class="cfg-card">
-    <div style="text-align:center;margin-bottom:20px">
-      <div style="background:var(--n);border-radius:12px;padding:10px 12px;display:inline-block;margin-bottom:14px">
-        <img src="data:image/png;base64,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" alt="Farmatodo" style="height:48px;width:auto;display:block">
+    <div style="text-align:center;margin-bottom:18px">
+      <div style="background:var(--n);border-radius:11px;padding:9px 11px;display:inline-block;margin-bottom:14px">
+        <img src="data:image/png;base64,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" alt="Farmatodo" style="height:46px;width:auto">
       </div>
-      <h2 style="font-size:17px;font-weight:700;color:#1E293B;margin-bottom:4px">Farmacia Escuela 2026</h2>
-      <p style="font-size:12px;color:#64748B">Configura la URL de tu Google Apps Script</p>
+      <h2 style="font-size:16px;font-weight:700;color:#1E293B;margin-bottom:4px">Primera configuración</h2>
+      <p style="font-size:12px;color:#64748B">Conecta la app a tu Google Sheet</p>
     </div>
     <label class="lbl">URL del Apps Script *</label>
-    <input id="cfg-url" placeholder="https://script.google.com/macros/s/..." style="margin-bottom:12px">
-    <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:11px;color:#1E40AF">
-      <strong>¿Cómo obtener la URL?</strong><br>
-      1. Abre tu Google Sheet → Extensiones → Apps Script<br>
-      2. Pega el código del archivo <code>apps-script-farmacia-escuela.js</code><br>
-      3. Implementar → Nueva implementación → App web → Cualquier persona → Implementar<br>
+    <input id="cfg-url" placeholder="https://script.google.com/macros/s/..." style="margin-bottom:10px">
+    <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:11px;color:#1E40AF;line-height:1.6">
+      <strong>Pasos:</strong><br>
+      1. Abre Google Sheet → Extensiones → Apps Script<br>
+      2. Pega el código del archivo <code>apps-script.js</code><br>
+      3. Implementar → App web → Cualquier persona → Implementar<br>
       4. Copia la URL y pégala arriba
     </div>
-    <button onclick="saveConfig()" class="btn-submit">
-      <i class="ti ti-check" style="font-size:16px"></i> Guardar y continuar
-    </button>
-    <button onclick="skipConfig()" style="width:100%;margin-top:8px;padding:10px;background:none;border:none;color:#64748B;font-size:12px;cursor:pointer;font-family:'Montserrat',sans-serif">
-      Probar sin guardar (solo visualización)
-    </button>
+    <button onclick="saveConfig()" class="btn-submit"><i class="ti ti-plug-connected" style="font-size:15px"></i> Conectar y continuar</button>
+    <button onclick="demoMode()" style="width:100%;margin-top:8px;padding:9px;background:none;border:none;color:#64748B;font-size:11px;cursor:pointer;font-family:'Montserrat',sans-serif">Modo demo (sin guardar datos)</button>
   </div>
 </div>
 
-<!-- ═══ TOPBAR ════════════════════════════════════════════════════== -->
+<!-- ─── LOGIN ──────────────────────────── -->
+<div id="s-login" class="screen">
+  <div class="login-card">
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="background:var(--n);border-radius:11px;padding:9px 11px;display:inline-block;margin-bottom:14px">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADsAAABICAYAAABIk43cAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAAVEklEQVR42u2beZRVxZ3HP1V179tfv16BRlkUBqUNiKJIEqSJxt2gUTAqGo1BjZlEM2OQGUclJkZlNDoxiyYSNTGKQ4+KUZMYGCNu0SCyNYuyiKDI/np5/Za7VM0f9/WjGxq6kVbnnJl7Tp97+y5V9a36/X71/S1PyM9dbBASAAOI4pniNR3+73iILt7v7p2O7XV1b39Hd/3t2c5efWuNZZCALH3UsaH9DcB8jHfMAX5/IP2Z7voWHVH+HzisT6MTKQRCitJUa2MwxnystoQQSCFKcmu0QfewrU8UrJISg8HPu+C6oA1ICSEbFbYB0Fr3bMJkIIR+wUE7HmgNUhTbCiEAv5u2PjGwSkm81iwIwaDDahk2uB/JWIR0S5bV723mo41bQSqsRATf1923lcmBNhwyqC9HHFZLeTJGS1uOdzdsYeN7WwIwyeh+2/pEwEop8JoynFQ/ihumns2Jxx1JLBIuPW9uzTLv9WXMfPA53nrrHazyxD5XRUmBl25l7Al13HDlVzh57FGUJWKl523ZPAsWruLOB//AK681YqX23ZYQn7uktPX0luh6LW3823WTuO26C0r3tTYYDAKBLOqv5/tcf+fvuW/Wc10Osr2t719zDjOvv6gkyl21BTDtrse4+/65WGVdADYaJfqM/AFC9JLoKrymDN+98mzumjYFX2uMNoFRkYFhEUJgjMHXBiUlZ4wfxZbmDAvfWIkVC5cMl1ISrynDdVdP5J7pl2AM+NogBHu0tVvvTxs3kg93tfDWm6s6tdVuGXttZaUU6LzDkMNqaXzmTixL7bac+zjaV8jzfEac+6+sXbcZGQ0Fz7IFjqobxOInb0cAQnbfFkCu4FD3lRvY9OEOZMjebamN7r19VgqJyTlc9/XTCIdsjDH7HVz7BBljCIdsvn/FWZiCgxQyWDHHZfrUs7FUYNF70pY2mng0zHemnIrJ5ktiX3qnN4AKwPM8wpVJzho/CmMC8D3dUgxw9vhRxGrK8TwPz/VI9a/i9HFHl3S3xxNuDBMnHIOVSuD5/icAVgqM4zGwfzUD+1UhBLtJRA8IBwb696mgbkh/jOOB4zHyHwZQXZ5Em0Dne0o4hBAMPqSG/rWVGMfrJBG9tLICfE1lKo5SCmMMB2Ly2i1n3ZBDwPPB8zlq6CEHRDoCsME5HLKpTMbB9+k4kF4BazAgBAXHK83wgbYAMHRAHygalKED+36McRSNldEUXI89d5neAWsAW7Fp6y6aWtuK98wBaj0M6FcVXErJgH6VezhvPR0I7GrKsHl7GmyLjsPoJbAGFbLZ+dFOFjauL+2JBwYV+lSVBdzZktRUlnUSzZ6pQ9DnG8vW0rwljWVbnSa917YeUZSjux56vjhA02NftR1tRVkclARLUZGMHdC6BpiCHu96+I+Bk7CnMeyqXykEUkqUklgd/pSSKCmRUuyll77WWGUx5s1fxMyHnsNSCs/ze27ggGQsAkqhLEUiFj0gMfZ8H0spfvjA07z80hKsZGwvymi1GxQlgz3K83Xgjnk++DqYso6xDimD2bcthKWwijOotUFrjVUW519uf5Sq8gRTz5uA5/kopXokjtFICKkktlJEiy5gd1gD6qmxLcUvn5jPjLtmY6US6C68Hwsh0I6LzhbAkljJGH37VNGvKkV1RZKyRJRQyMJoyOYLNLVk2barhS07mtiVzuBm88GIIjYyHEIoiR2PcuUN95PN5rn2ktOLtJB9s6Di7ZCtStIUsq1usWptQIClFHc//BzTbvsdViKK3kf4xsLxGDygDxed+XlOGDmEuqGH0L9PBfFoZD+zqdmRzrDhw+0sWf0+ry1+l9cXr2HN+o/QeQcSUcJlca675SE2bt7J3TdMCUTd1ygl92mgbMtCFtWkq/c6i60OqKQxXPvjR/jZg4HnpPezE1gmk+XsLx3L7f/0tb32LKM7h0+MCVbIthQ1lWXUVJZx/IghXDn5JLK5An9fvo6n5v2dp+a9xYfvb4VomJ888AzvrP+QWT++mr5VKbwiYLEP6hh4NXIvXtvREPk60M/N29NcPv1+5s1fhFVVhtaa/e14EiFwXA/P9yk4XiByRQbUPsNKyUBcLIVtKfIFhxVrN/HaotUsWfkeTa1txKJhJoyp475/u5wlT9/BL2+/irrDa0EKnnv+Db544Qz++41GLCWDONR+mJEQXW85vtaIotj++dWlnDDpJub9dQl2dQrf3z/QTgbKUgrQnZzhjp0oKdm8Pc09Dz3H0/MXsWHLriAWZCkOrSnnpBOGc+m5J/Llz4+guiLJNRedwmVfHc/DTy7g33/zLOsaN3DqFXdw0zVf5eZvfzWw1vsQa7NHbDRYzUBsHc/jlp82MPNXfwAlsSoSPbb6irIjf3Dc6CM4u/4YtDF7gW0H+qfXlnHmFXcy77/fJp13QCmkbYEQtLRkWbpkLY8++yoLFq6ipjLJsMG12JbFmJFDuOisL5DxPd5auo4FL77NX5esYdTwQRzSt7IUKJNS0tqW46eP/gUlJddOOZVoJFTScykFby5fy6Tv3kvD0y+jkjGkpbq0uvsik7I7gq6kZMHClUycOpOtu1oJ1ZSjQnYQaS/KjQxZWBUJVCzCS683cvY3Z3LmVTP5+/J1APSrLueBW6fy5P3/TO3Q/rz64mLGT/khP/rlUzieh6UUvta4roc2Gl8bXM9Ha4NlKXIFl5vvm8OJF/6At5auw65KoY0pOew99rn3t39JIWjJ5Pj6jb/G8zV2LFwcUGd2ZIzB93UwuEQMlYjxp/mL+MKFM7j2tkfYnm4B4Lwvj+Hlx2Ywtn4kbbtaueUnT/D5yTcz/2+NKCmxrEC0Pc8nZFtIKfjzK0sYO/kmbvvJf+IphUpEeyy2PQYbGAPBI8+8zMZ3NmEnYj3qxNc6IBepOFopfvbgsxx33o08/vxrRc+mLy/85l+ZeNZYMPD26o2c8vXbuGrGLBav3gAmmLyFjeu4/MZfccY37mDZ6o3YVSkEHIDYdrWdH3quufrKiTxwyzdKe1fgJgUrW3/5bbzy6nJUItZtELpLC2gp3FwB8g6TvvJF7vqXKQzuX4Pn+1z8/Z/TMPdVQpVlOLtakMkYiIA8aq0xmRyyLI4Q4oD82q5FdR8xqHYRzuYKrN24DWNbPU4x7LX5ez4qbGOVJ/ivZ1/jhPNv4nfPvIKlFHPuvY6zTh+Ds7OFSHUKXVxVbQL/2CpPBP8fLNCeeD0F1wsc8oMMtWod6LRVkWRbcxuXfe8+Lpn2C5paszzzi+sZffww8ulWLFt1Vgm/d0B2A3a3F1KRioHW9EZk2fd8rLBNpDrFY4/PZ8hJ17Jk1Qae/tk/U1mVQuedbqOIvQ5WiGBWLUtxwoghiLy7T/rW87iyDILoeYf8tjT9Dq/lyq+dxKH9qhjQr4qHZ34L7bgfI6TTG2Jc7POqSRMwlqTnaePO0T6lJEIK/LYcXrqFgbWV/Gj6FNa88BPu/P7FOI7LzqYMEyccy9RLTsVLt6KU+nTBKinxtWb8ccOZMmkC7vYmQiGrBwCDb5VSaM/HS2fQ2TzHHT2EB2Z+i3Xz/oObvn0e6zdt49JpP6du4nR2NLVgjGHmP11A7eC+n5g4W93FdLU23H/z5ax7fwtvvLIcu6YcQzt7CaoWhAjeNYDn+uhcFnyfin6VnHXWWL5+zomc8sWRACxasZ7bH3iGuS8uQrfmiPWtJJWIIYSgMpXk1msncdX1v8CKlAWh0E8LbKA/hmQ8yguzpnP1zbN4Yu4rRWc9FEQtjA+uj+94gCFeVcYXThjO+accz5n1oxhQWw3AklUb+PEDc3nyLwsxeQdZFkel4iTj4VI609eay88Zz72/e4HVq95HxsIHTAkPKhndnnUri8eYfc+1XHrOifx6zou8uXw9LW15opEQh/at4JgjBzJhzHAmHD+cQYf0KX2//oNt3PGrufz26Vdw2/KIsjhWJBRQTMcjGY8Qj4aL+77BthTTvnEmV3zvPkQ8CvifHtiOgA1wZv0xnFl/DM2ZLC2tWWLRMFXlyb2+acsXuO93f+KuWc+T3ppGpOJB0tnX+H6QrsTXVJUnUMWIQ/v5gtPGcMvQQ/jgwx2ojpm4T5JU7AlYClHivqlEjAG11SWgrueXuPOLb65g3IUzuPHHj5LO5rGrygJXriNJCG7QrypVIh6i2H48GuGiM8ZCF5m4TwVsRysti5HI9qoXXRQ/hGD63Y9z8qW3sWTl+9hVKWQxpGq6Cp9qw6HFyL/pZCfga2eMRcQiH4uPH5QY7zNj1u4wSMH2XS1c8L2f8tJfF6Mqy0CIHnhJhsH9azplaoKQLow6chDDjxjAypXvo3rJUB2UjJhiTDnd0sYpV9zBSwuWEupTUXSsdffJMKUYMqDPXsHw9qDBSWOGQ8Htca73EwXbvqrfuf23LH3rHcI1KVzX6xlP9jUiGi6B7SqdO370kSDFgSRSPhmwujj7i1a+x+NPv4JVncJxvB6rgPF8qqqSDOpfvVeas509HX3EQKyyGL7XO46IPJhVBZjz5zch7xwQgZdCgOMxZEAfUolYELrt8H375YDaKvrVlGM8r1cchI8Ntl2PFq9+Hyx1QPlYIQS4HsceObhTqnHPfT0aDgV5Wtf/bMG2993aludAS4sMBqTgi8f+w/7zOEBtTTn4fq+Uah2EGAfn8mTg3PdUqUTRiY9UJBl37BFFX1d0HSgHqsuTuzv7rMAaE2wtxx01OJj5HqKVUkKuwJiRQxhUW10K7LEPuIlYhM4155+hzn7tjLHIeATTw9CNVBLjeHzzvPGdxHWfrEd9hnRx9woFPPZzQwcw9cKT8XY0Y4fs/X4TClk4O5s5ZuxwLjzj8+gi+d9vdLIXfdqDmrZ25/6eaRcz7kujKGzZiSxG9ttLEpSSpTrGwtYmhh05kCfvubYHyebgSSZbYP8/u/iUwAYVZRCPRvjjr6dz2aWn4ufyuDub8Zrb8DJZvOY23J3NSM/jsikn8+oTt3LYoX32o6udyeP2dGvX9OrTdAT23BOTsQiP3HEN3774FObOe4tl724ikytQlUpwbN0gJp40mhHDBpb0VMruCy+BoJ5JKXrDpe2VSvKSc29gzIihjBkxdJ8Us732uDsHQwhBNl/ggy27wFa94sBb7Y0HEYSD56CO65cGu3sSTKncKGBapnsHQwje37yDLdubEXsUb318sMV631I5wUEevdJG8bxq3Yf4LW3YFcmgZOmgwdrKX7tpKy+8tgzP153CIJ/Vz9O01lhS8uhzr+/WV9Mb6nb0FcZ4GhyX/3WHbSFCNr1inYzGkm7rZKWihOLqfx1Wxzf4TqaDYB/MsrqG/z8A6iaH9r45Y2/rM/oqm8mTu5/6yZMV9fUWo6+yP/4YRPFeF+Oomxxi8mQVjGeO2muM9fWWUHWTJxlUHOP7CKmRltR+7k1WPbUmMay+Omf3G2uMVSVw0r7T+oIMJc8HZWPIKdw17qonFwNS1U0632DFhLAykezmVy0/6mSSqS8Zo5NC6Iy/wsyFBh/AGvbV47UVGQbaltpZrYU1FKEUmOAnHHZYSDe/wVvdsCA89PQhXrhiFNrP+TsaX2b7ygy1Z8dkKnoOUoWEELti6bWvt25euDOYhFs1gFU3eZxRkVrpZdcWx4gQn7tkG3a8RsjA6gkrArkt35D5zCodrfwjVqTSIMBpfdfs2DBOVA/ehh0v1hdrjNN8v4muu04Uhm/HTqSQCpFPrwXjEKmsM9oHt3WnCa+uBVD5Ix42oeSUoLDLh0Lz49iJi4W0MRSrYO0oMrvjCWOc+dhl9xsrZoNGuNn1ys1d4KabVouafhnsYg2Gm9shvNbL/FVP/ZG6yf2EtGdjJyYgLfAdcFt+awpvXy0RohU3u120bj5Ttmw+TeS2nKtymaU6nHrKCCHI7fw2TutGhMzi6jyCAk7by8JJT8TLvUG4/Borc+jxCLETt22Jym6bZlRkqLEidTK7bRpeZhlCeixa5Mr80O/pSOUU47Q8iNNyK0J6QrDA6JajhdNyMr7jCS8/z3hNowz+C4QqZhljXPLpu2Whebaxood7KvRkJJGvBLI4mTdFdteVRsiQUck5yf4nVwms/yBSOUEU2l4jn75DuPn1hKsuE/boGRKDQoiwsWKHm3jVMJF3P9J2pIpwqr9wmq/RqxruBzIYolgZDTIM3iZ/xZxn8QtPIBQGlcQYC0zGW9VwN9r9CM/dGlzrbPAMYYQ1lULTFrNi9lVGimeRloWmlcYnl/l+diFCWEKIXSz5/VIj7BONCiHctm+albOn+StmX4zT8ntCyUFOqOZUMC5Gt+jVc2ZJr3WqscPxXFnlPyKtM0Shea3eufw0s2L2jVYufTperkVI+1sSgYNQZYRiPyeU+Jmxre8YKaqMdo0R0atF3UVPINQgBFkiFTZG5xB2vTzqogZjx2bgZjZF/ezbQAwjAmMlhItAB4ZL2CD80aNHWwgRRciEqLt4ttDci/ZAEhgckUwU41MWTFYgBuI7OpTP/q3dIAnjvYEQWhpVA/ggQoHr5q5Be9oo6zAESaPdNWxd1kb9DMtZ//wafGcXUlVIIIT2tqlc80hVaB0RxrsBIeIY3yDFsULKLyNENJjJhADjIWQVQo1D2hVonc60+tli+sanocEHDWhoaPARRiOMzuVyAnAQMiqkOEUIOSIIbwgDt2osX4PRIAw0+Bj9NlZEutHk9Qx9zI4eMbG/kaEr0a40uI2ADaaQGlRf7snED5GWxM/NxpiPsKLjrWHnjmPBrUYeef5l2LFBaPcdiSGOMMp9p2G5u+yhxuzKhi0gbGFFpdSFqbrxsWp89yOQVeTec1GhJL47Xzf+vhYnM4tIaqSVjIwIBmmCXzEYGcGIaPE6jBGxmpUrNUZUo70PdONj1QJzBVZUYkyx7t4XSEsWRR5D6y9EoWWzjpR/V0TGvFuwUo2EU0dLJ/OEv/Pdl4A4KnRyS+LQDwiVfUUWmn7jr577F+EX7kWG4n647GVx1JR3TTj1CNozwnNvkBh/idBmMYy2qZ9hAUIYvR2/sBTYFYgPi9HecqyoFr6zFPx1xXjSX4SfXyJ8Nyvw38boxmA39BeDXlRMdKwA/+0ioMUYvbRIhtP4haVCsyN45rp4haVG+GsAWPncRuU0nSG8tgVIe6CRIiLz6Qf99JpvUjlUoP2/CWNWCWktE/n0d/yVc6ZSX2/pVQ13i3x6OrAVZR8utP+uLGQu9N9p+MP/AFK66zUN1wJRAAAAAElFTkSuQmCC" alt="Farmatodo" style="height:46px;width:auto">
+      </div>
+      <h2 style="font-size:17px;font-weight:700;color:#1E293B;margin-bottom:4px">Farmacia Escuela 2026</h2>
+      <p style="font-size:12px;color:#64748B">CENCAP · Gestión de Personas</p>
+    </div>
+    <label class="lbl">Correo electrónico</label>
+    <input id="login-email" type="email" placeholder="usuario@farmatodo.com" style="margin-bottom:12px" onkeydown="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()" class="btn-submit" id="login-btn">
+      <i class="ti ti-login" style="font-size:15px"></i> Iniciar sesión
+    </button>
+    <div id="login-err" style="color:#DC2626;font-size:11px;text-align:center;margin-top:10px;display:none"></div>
+    <div style="margin-top:16px;padding-top:12px;border-top:1px solid #F1F5F9;text-align:center">
+      <button onclick="showConfig()" style="background:none;border:none;color:#94A3B8;font-size:10px;cursor:pointer;font-family:'Montserrat',sans-serif">
+        <i class="ti ti-settings" style="font-size:11px"></i> Cambiar configuración
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TOPBAR ─────────────────────────── -->
 <div class="topbar" id="topbar" style="display:none">
-  <div class="logo-w"><img src="data:image/png;base64,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" alt="Farmatodo" style="height:36px;width:auto"></div>
-  <div style="flex:1">
-    <h1>Farmacia Escuela</h1>
-    <div class="sub">CENCAP · Gestión de Personas · 2026</div>
+  <div class="logo-w"><img src="data:image/png;base64,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" alt="Farmatodo" style="height:32px;width:auto"></div>
+  <div style="flex:1;min-width:0">
+    <h1 id="tb-title">Farmacia Escuela</h1>
+    <div class="sub" id="tb-sub">CENCAP · Gestión de Personas · 2026</div>
   </div>
-  <button class="btn-cfg" onclick="showCfgScreen()" title="Configuración">
-    <i class="ti ti-settings" style="font-size:16px"></i>
-  </button>
+  <div style="display:flex;align-items:center;gap:6px">
+    <span class="role-badge" id="tb-role"></span>
+    <button class="tb-btn" onclick="doLogout()" title="Cerrar sesión"><i class="ti ti-logout" style="font-size:16px"></i></button>
+  </div>
 </div>
 
-<!-- ═══ CONFIG BANNER (URL faltante) ══════════════════════════════= -->
-<div id="cfg-banner" style="display:none">
-  <span><i class="ti ti-alert-triangle" style="margin-right:4px"></i> Sin URL de Apps Script — los formularios no guardarán datos.</span>
-  <button onclick="showCfgScreen()" style="background:none;border:none;color:#92400E;font-weight:600;font-size:12px;cursor:pointer;font-family:'Montserrat',sans-serif;padding:0">Configurar</button>
-</div>
-
-<!-- ═══ SCREENS ═══════════════════════════════════════════════════= -->
-
-<!-- HOME -->
+<!-- ─── HOME ──────────────────────────── -->
 <div id="s-home" class="screen">
   <div class="page" style="padding-top:18px">
-    <p style="font-size:12px;color:#64748B;margin-bottom:14px;font-weight:500">Selecciona el instrumento a completar:</p>
-    <div class="mod-card" onclick="go('encuesta')">
-      <div class="mod-icon" style="background:#EFF6FF"><i class="ti ti-clipboard-list" style="color:var(--b)"></i></div>
-      <div style="flex:1">
-        <div style="font-size:14px;font-weight:700;margin-bottom:2px">Encuesta de satisfacción</div>
-        <div style="font-size:11px;color:#64748B">Colaborador al cierre de Farmacia Escuela · 12 preguntas Likert</div>
-      </div>
-      <i class="ti ti-chevron-right" style="color:#CBD5E1;font-size:18px"></i>
-    </div>
-    <div class="mod-card" onclick="go('instructor')">
-      <div class="mod-icon" style="background:#F0FDF4"><i class="ti ti-checklist" style="color:#16A34A"></i></div>
-      <div style="flex:1">
-        <div style="font-size:14px;font-weight:700;margin-bottom:2px">Checklist del Instructor</div>
-        <div style="font-size:11px;color:#64748B">Verificación proceso a proceso · D1–D5 (G1) o D1–D10 (G2) · hasta 3 colaboradores</div>
-      </div>
-      <i class="ti ti-chevron-right" style="color:#CBD5E1;font-size:18px"></i>
-    </div>
-    <div class="mod-card" onclick="go('gerente')">
-      <div class="mod-icon" style="background:#FFF7ED"><i class="ti ti-building-store" style="color:#EA580C"></i></div>
-      <div style="flex:1">
-        <div style="font-size:14px;font-weight:700;margin-bottom:2px">Checklist Gerente de Área</div>
-        <div style="font-size:11px;color:#64748B">Evaluación 5 días en tienda destino · DOMINA / EN PROCESO / NO DOMINA</div>
-      </div>
-      <i class="ti ti-chevron-right" style="color:#CBD5E1;font-size:18px"></i>
-    </div>
-    <div class="mod-card" onclick="go('dashboard')">
-      <div class="mod-icon" style="background:#F5F3FF"><i class="ti ti-chart-bar" style="color:#7C3AED"></i></div>
-      <div style="flex:1">
-        <div style="font-size:14px;font-weight:700;margin-bottom:2px">Dashboard de analítica</div>
-        <div style="font-size:11px;color:#64748B">Resultados consolidados · dominio de procesos · comparativas</div>
-      </div>
-      <i class="ti ti-chevron-right" style="color:#CBD5E1;font-size:18px"></i>
-    </div>
+    <div style="font-size:11px;color:#64748B;margin-bottom:12px;font-weight:500">Hola, <strong id="home-nombre"></strong> — Selecciona un módulo:</div>
+    <div id="home-cards"></div>
+    <button class="btn-sec" onclick="go('guide')" style="width:100%;justify-content:center;margin-top:4px;border-color:#E2E8F0;color:#64748B">
+      <i class="ti ti-book" style="font-size:14px"></i> Guía de uso
+    </button>
   </div>
 </div>
 
-<!-- ENCUESTA -->
+<!-- ─── GUÍA ──────────────────────────── -->
+<div id="s-guide" class="screen">
+  <div class="topbar">
+    <button onclick="goBack()" class="tb-btn"><i class="ti ti-arrow-left" style="font-size:17px"></i></button>
+    <div style="flex:1;margin-left:8px"><h1>Guía de uso</h1><div class="sub">Farmacia Escuela 2026</div></div>
+  </div>
+  <div class="page" id="guide-body"></div>
+</div>
+
+<!-- ─── ENCUESTA ─────────────────────── -->
 <div id="s-encuesta" class="screen">
   <div class="topbar">
-    <button onclick="go('home')" style="background:rgba(255,255,255,.1);border:none;color:white;border-radius:7px;padding:6px 8px;cursor:pointer"><i class="ti ti-arrow-left" style="font-size:18px"></i></button>
+    <button onclick="goBack()" class="tb-btn"><i class="ti ti-arrow-left" style="font-size:17px"></i></button>
     <div style="flex:1;margin-left:8px"><h1>Encuesta de satisfacción</h1><div class="sub">Farmacia Escuela · Piloto 2026</div></div>
     <div>
-      <div class="pbar-w" style="width:78px"><div id="ep-fill" class="pbar-f" style="width:0%"></div></div>
-      <div id="ep-lbl" class="pbar-lbl">0 / 12</div>
+      <div class="pbar-w"><div id="ep-f" class="pbar-f" style="width:0%"></div></div>
+      <div id="ep-l" class="pbar-l">0/12</div>
     </div>
   </div>
   <div class="page" id="enc-body"></div>
 </div>
 
-<!-- INSTRUCTOR -->
+<!-- ─── INSTRUCTOR ──────────────────── -->
 <div id="s-instructor" class="screen">
   <div class="topbar">
-    <button onclick="go('home')" style="background:rgba(255,255,255,.1);border:none;color:white;border-radius:7px;padding:6px 8px;cursor:pointer"><i class="ti ti-arrow-left" style="font-size:18px"></i></button>
-    <div style="flex:1;margin-left:8px"><h1>Checklist Instructor</h1><div class="sub" id="instr-sub">Farmacia Escuela</div></div>
-    <div id="instr-pct" style="font-size:11px;color:rgba(255,255,255,.6)"></div>
+    <button onclick="goBack()" class="tb-btn"><i class="ti ti-arrow-left" style="font-size:17px"></i></button>
+    <div style="flex:1;margin-left:8px"><h1>Checklist Instructor</h1><div class="sub" id="isub">Farmacia Escuela</div></div>
+    <div>
+      <div class="pbar-w"><div id="ip-f" class="pbar-f" style="width:0%"></div></div>
+      <div id="ip-l" class="pbar-l"></div>
+    </div>
   </div>
   <div class="page" id="instr-body"></div>
 </div>
 
-<!-- GERENTE -->
+<!-- ─── GERENTE TIENDA ──────────────── -->
 <div id="s-gerente" class="screen">
   <div class="topbar">
-    <button onclick="go('home')" style="background:rgba(255,255,255,.1);border:none;color:white;border-radius:7px;padding:6px 8px;cursor:pointer"><i class="ti ti-arrow-left" style="font-size:18px"></i></button>
-    <div style="flex:1;margin-left:8px"><h1>Checklist Gerente de Área</h1><div class="sub">Evaluación en tienda destino</div></div>
-    <div id="ger-pct" style="font-size:11px;color:rgba(255,255,255,.6)"></div>
+    <button onclick="goBack()" class="tb-btn"><i class="ti ti-arrow-left" style="font-size:17px"></i></button>
+    <div style="flex:1;margin-left:8px"><h1>Checklist Gerente de Tienda</h1><div class="sub">Evaluación en tienda destino</div></div>
+    <div>
+      <div class="pbar-w"><div id="gp-f" class="pbar-f" style="width:0%"></div></div>
+      <div id="gp-l" class="pbar-l"></div>
+    </div>
   </div>
   <div class="page" id="ger-body"></div>
 </div>
 
-<!-- DASHBOARD -->
+<!-- ─── DASHBOARD ───────────────────── -->
 <div id="s-dashboard" class="screen">
   <div class="topbar">
-    <button onclick="go('home')" style="background:rgba(255,255,255,.1);border:none;color:white;border-radius:7px;padding:6px 8px;cursor:pointer"><i class="ti ti-arrow-left" style="font-size:18px"></i></button>
-    <div style="flex:1;margin-left:8px"><h1>Dashboard de analítica</h1><div class="sub">Farmacia Escuela · Resultados consolidados</div></div>
-    <button onclick="loadDashboard()" class="btn-cfg"><i class="ti ti-refresh" style="font-size:16px"></i></button>
+    <button onclick="goBack()" class="tb-btn"><i class="ti ti-arrow-left" style="font-size:17px"></i></button>
+    <div style="flex:1;margin-left:8px"><h1>Dashboard de analítica</h1><div class="sub">Farmacia Escuela · Resultados</div></div>
+    <button onclick="loadDashboard()" class="tb-btn"><i class="ti ti-refresh" style="font-size:16px"></i></button>
   </div>
-  <div class="page" id="dash-body">
-    <div style="text-align:center;padding:48px 0;color:#94A3B8">
-      <i class="ti ti-loader-2" style="font-size:32px;animation:spin .8s linear infinite"></i>
-      <div style="margin-top:10px;font-size:13px">Cargando datos...</div>
-    </div>
-  </div>
+  <div class="page" id="dash-body"><div style="text-align:center;padding:40px 0;color:#94A3B8"><i class="ti ti-loader-2" style="font-size:30px;animation:spin .8s linear infinite"></i></div></div>
 </div>
 
-<!-- BOTTOM NAV -->
+<!-- ─── BOTTOM NAV ───────────────────── -->
 <div id="bnav" style="display:none">
-  <div class="bni">
-    <button onclick="go('home')" data-s="home"><i class="ti ti-home-2"></i><span>Inicio</span></button>
-    <button onclick="go('encuesta')" data-s="encuesta"><i class="ti ti-clipboard-list"></i><span>Encuesta</span></button>
-    <button onclick="go('instructor')" data-s="instructor"><i class="ti ti-checklist"></i><span>Instructor</span></button>
-    <button onclick="go('gerente')" data-s="gerente"><i class="ti ti-building-store"></i><span>Gerente</span></button>
-    <button onclick="go('dashboard')" data-s="dashboard"><i class="ti ti-chart-bar"></i><span>Analítica</span></button>
-  </div>
+  <div class="bni" id="bni-items"></div>
 </div>
 
 <script>
-// ═══ CONFIG ═══════════════════════════════════════════════════════════
-let SURL = localStorage.getItem('fe_url') || '';
+// ══════════════════════════════════════════════
+// CONSTANTES Y CONFIG
+// ══════════════════════════════════════════════
+const SURL_KEY = 'fe_surl_v2';
+const USER_KEY = 'fe_user_v2';
+let SURL = localStorage.getItem(SURL_KEY) || '';
+let CU = null; // current user
+let navStack = [];
+let curScreen = '';
+
+// Tiendas por defecto (se sobreescribe desde Sheets)
+const TIENDAS = {
+  Venezuela: ['FUERZAS ARMADAS','ESQUINA','SAMBIL MARACAIBO','LOS PALOS GRANDES','LA CASTELLANA','CHACAO','EL ROSAL','ALTAMIRA','BELLO MONTE','CARACAS CENTRO','MARACAY','VALENCIA','BARQUISIMETO','MATURÍN'],
+  Colombia:  ['BELLA SUIZA','HAYUELOS','SIERRA NEVADA','GOLF','GRANADA','BOGOTÁ CENTRO','MEDELLÍN LAURELES','CALI CENTRO','CHAPINERO','USAQUÉN'],
+  Argentina: ['BUENOS AIRES CENTRO','PALERMO','RECOLETA','BELGRANO','CABALLITO']
+};
 
 function saveConfig(){
-  const u = document.getElementById('cfg-url').value.trim();
-  if(!u){alert('Pega la URL del Apps Script primero');return;}
-  localStorage.setItem('fe_url', u);
-  SURL = u;
-  hideCfg();
+  const u=document.getElementById('cfg-url').value.trim();
+  if(!u){alert('Pega la URL del Apps Script');return;}
+  localStorage.setItem(SURL_KEY,u);SURL=u;
+  document.getElementById('s-config').classList.remove('on');
+  document.getElementById('s-login').classList.add('on');
+  loadTiendas();
 }
-function skipConfig(){ SURL=''; hideCfg(); }
-function showCfgScreen(){ document.getElementById('cfg-screen').style.display='flex'; }
-function hideCfg(){
-  document.getElementById('cfg-screen').style.display='none';
+function demoMode(){SURL='';document.getElementById('s-config').classList.remove('on');document.getElementById('s-login').classList.add('on');}
+function showConfig(){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));document.getElementById('s-config').classList.add('on');}
+
+// ══════════════════════════════════════════════
+// AUTH / LOGIN
+// ══════════════════════════════════════════════
+const ROLES = {Administrador:'Administrador', User1:'Instructor/Gerente', User:'Colaborador'};
+
+async function doLogin(){
+  const email = document.getElementById('login-email').value.trim().toLowerCase();
+  if(!email){showLoginErr('Ingresa tu correo');return;}
+  const btn=document.getElementById('login-btn');btn.disabled=true;
+  btn.innerHTML='<i class="ti ti-loader-2" style="animation:spin .8s linear infinite;font-size:15px"></i> Verificando...';
+  document.getElementById('login-err').style.display='none';
+
+  if(!SURL){
+    // Demo: asignar admin
+    setUser({nombre:'Administrador Demo',correo:email,rol:'Administrador'});
+    return;
+  }
+  try{
+    const r=await fetch(`${SURL}?type=login&email=${encodeURIComponent(email)}`);
+    const d=await r.json();
+    if(d.found){setUser(d);}
+    else{showLoginErr(d.message||'Correo no registrado en el sistema');btn.disabled=false;btn.innerHTML='<i class="ti ti-login" style="font-size:15px"></i> Iniciar sesión';}
+  }catch(e){
+    showLoginErr('Error de conexión. Verifica la URL del Apps Script o prueba en modo demo.');
+    btn.disabled=false;btn.innerHTML='<i class="ti ti-login" style="font-size:15px"></i> Iniciar sesión';
+  }
+}
+function showLoginErr(msg){const el=document.getElementById('login-err');el.textContent=msg;el.style.display='block';}
+function setUser(u){
+  CU=u;sessionStorage.setItem(USER_KEY,JSON.stringify(u));
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
   document.getElementById('topbar').style.display='flex';
   document.getElementById('bnav').style.display='block';
-  document.getElementById('cfg-banner').style.display = SURL?'none':'flex';
-  go('home');
+  document.getElementById('tb-role').textContent=ROLES[u.rol]||u.rol;
+  document.getElementById('home-nombre').textContent=(u.nombre||u.correo).split(' ')[0];
+  renderNav();renderHomeCards();
+  go('home',false);
+}
+function doLogout(){
+  sessionStorage.removeItem(USER_KEY);CU=null;
+  document.getElementById('topbar').style.display='none';
+  document.getElementById('bnav').style.display='none';
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  document.getElementById('s-login').classList.add('on');
+  document.getElementById('login-btn').disabled=false;
+  document.getElementById('login-btn').innerHTML='<i class="ti ti-login" style="font-size:15px"></i> Iniciar sesión';
+  document.getElementById('login-email').value='';
 }
 
-(function init(){
-  if(SURL){
-    hideCfg();
-  } else {
-    // Show config screen
-  }
-})();
+// ══════════════════════════════════════════════
+// ROUTER
+// ══════════════════════════════════════════════
+const NAV_ITEMS = [
+  {id:'home',lbl:'Inicio',icon:'ti-home-2',roles:['all']},
+  {id:'encuesta',lbl:'Encuesta',icon:'ti-clipboard-list',roles:['all']},
+  {id:'instructor',lbl:'Instructor',icon:'ti-checklist',roles:['Administrador','User1']},
+  {id:'gerente',lbl:'Gerente',icon:'ti-building-store',roles:['Administrador','User1']},
+  {id:'dashboard',lbl:'Analítica',icon:'ti-chart-bar',roles:['Administrador']},
+];
 
-// ═══ ROUTER ═══════════════════════════════════════════════════════════
-let dashLoaded = false;
-function go(s){
+function renderNav(){
+  const rol=CU?.rol||'User';
+  const items=NAV_ITEMS.filter(i=>i.roles.includes('all')||i.roles.includes(rol));
+  document.getElementById('bni-items').innerHTML=items.map(i=>`
+    <button onclick="go('${i.id}')" data-s="${i.id}">
+      <i class="ti ${i.icon}"></i><span>${i.lbl}</span>
+    </button>`).join('');
+}
+function renderHomeCards(){
+  const rol=CU?.rol||'User';
+  const cards=[
+    {id:'encuesta',lbl:'Encuesta de satisfacción',desc:'Colaborador al cierre de Farmacia Escuela · 12 preguntas',icon:'ti-clipboard-list',bg:'#EFF6FF',ic:var_b,roles:['all']},
+    {id:'instructor',lbl:'Checklist Instructor',desc:'Verificación proceso a proceso · D1–D5 o D1–D10 · hasta 3 colaboradores',icon:'ti-checklist',bg:'#F0FDF4',ic:'#16A34A',roles:['Administrador','User1']},
+    {id:'gerente',lbl:'Checklist Gerente de Tienda',desc:'Evaluación en tienda destino · DOMINA / EN PROCESO / NO DOMINA',icon:'ti-building-store',bg:'#FFF7ED',ic:'#EA580C',roles:['Administrador','User1']},
+    {id:'dashboard',lbl:'Dashboard de analítica',desc:'Resultados consolidados · dominio de procesos · comparativas',icon:'ti-chart-bar',bg:'#F5F3FF',ic:'#7C3AED',roles:['Administrador']},
+  ].filter(c=>c.roles.includes('all')||c.roles.includes(rol));
+  document.getElementById('home-cards').innerHTML=cards.map(c=>`
+    <div class="mod-card" onclick="go('${c.id}')">
+      <div class="mod-icon" style="background:${c.bg}"><i class="ti ${c.icon}" style="color:${c.ic}"></i></div>
+      <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700;margin-bottom:2px">${c.lbl}</div>
+      <div style="font-size:10px;color:#64748B">${c.desc}</div></div>
+      <i class="ti ti-chevron-right" style="color:#CBD5E1;font-size:17px;flex-shrink:0"></i>
+    </div>`).join('');
+}
+
+const var_b = '#418FDE';
+
+function go(s,addHist=true){
+  if(addHist&&curScreen&&curScreen!==s)navStack.push(curScreen);
+  curScreen=s;
   document.querySelectorAll('.screen').forEach(el=>el.classList.remove('on'));
   document.getElementById('s-'+s)?.classList.add('on');
-  document.querySelectorAll('[data-s]').forEach(b=>{b.classList.toggle('act',b.dataset.s===s);});
-  if(s==='encuesta'&&!encReady) initEncuesta();
-  if(s==='instructor'&&!instrReady) initInstructor();
-  if(s==='gerente'&&!gerReady) initGerente();
-  if(s==='dashboard') loadDashboard();
+  document.querySelectorAll('[data-s]').forEach(b=>b.classList.toggle('act',b.dataset.s===s));
+  if(s==='encuesta'&&!encReady)initEncuesta();
+  if(s==='instructor'&&!instrReady)initInstructor();
+  if(s==='gerente'&&!gerReady)initGerente();
+  if(s==='guide')renderGuide();
+  if(s==='dashboard')loadDashboard();
   window.scrollTo(0,0);
 }
+function goBack(){if(navStack.length)go(navStack.pop(),false);else go('home',false);}
 
-// ═══ SUBMIT TO SHEETS ════════════════════════════════════════════════
-async function postData(payload){
-  if(!SURL){ console.warn('No URL'); return true; }
-  try {
-    await fetch(SURL,{
-      method:'POST',mode:'no-cors',
-      body:new URLSearchParams({payload:JSON.stringify(payload)})
-    });
-    return true;
-  } catch(e){ console.error(e); return false; }
+// ══════════════════════════════════════════════
+// DATA (Tiendas, Grupos)
+// ══════════════════════════════════════════════
+let tiendasLoaded=false;
+async function loadTiendas(){
+  if(!SURL||tiendasLoaded)return;
+  try{
+    const r=await fetch(`${SURL}?type=tiendas`);
+    const d=await r.json();
+    if(d.Venezuela)Object.assign(TIENDAS,d);
+    tiendasLoaded=true;
+  }catch(e){}
 }
 
-// ═══════════════════════════════════════════════════════════════════════
+function tiendasOptions(pais){
+  const list=TIENDAS[pais]||[];
+  return'<option value="">Seleccionar tienda...</option>'+list.map(t=>`<option value="${esc(t)}">${t}</option>`).join('');
+}
+
+// ══════════════════════════════════════════════
 // MÓDULO 1: ENCUESTA DE SATISFACCIÓN
-// ═══════════════════════════════════════════════════════════════════════
-const SC=['#E24B4A','#EF9F27','#888780','#639922','#1D9E75'];
-const SF=['Totalmente en desacuerdo','En desacuerdo','Neutral','De acuerdo','Totalmente de acuerdo'];
+// ══════════════════════════════════════════════
+const SC_E=['#E24B4A','#EF9F27','#888780','#639922','#1D9E75'];
+const SF_E=['Totalmente en desacuerdo','En desacuerdo','Neutral','De acuerdo','Totalmente de acuerdo'];
 const SURVEY=[
   {n:'01',t:'Experiencia general',qs:[
     {id:1,t:'La Farmacia Escuela me preparó para ejecutar mis funciones con seguridad en la tienda destino.'},
@@ -386,135 +462,139 @@ const SURVEY=[
     {id:12,t:'Recomendaría la Farmacia Escuela como método de formación inicial a otros colaboradores.'}
   ]}
 ];
+let encReady=false,eAns={},eC={pais:'Venezuela',enviarCopia:false};
+function eSC(v){if(v>=4.5)return'#1D9E75';if(v>=3.5)return'#639922';if(v>=2.5)return'#888780';if(v>=1.5)return'#EF9F27';return'#E24B4A';}
+function eSL(v){if(v>=4.5)return'Excelente';if(v>=3.5)return'Bueno';if(v>=2.5)return'Regular';return'Requiere atención';}
+function secAv(ids){const v=ids.map(i=>eAns[i]).filter(Boolean);return v.length?v.reduce((a,b)=>a+b,0)/v.length:0;}
 
-let encReady=false, eAns={}, eCampos={};
-function sColor(v){if(v>=4.5)return'#1D9E75';if(v>=3.5)return'#639922';if(v>=2.5)return'#888780';if(v>=1.5)return'#EF9F27';return'#E24B4A';}
-function sLbl(v){if(v>=4.5)return'Excelente';if(v>=3.5)return'Bueno';if(v>=2.5)return'Regular';return'Requiere atención';}
-function secAvg(ids){const v=ids.map(i=>eAns[i]).filter(Boolean);return v.length?v.reduce((a,b)=>a+b,0)/v.length:0;}
+function initEncuesta(){encReady=true;renderEncuesta();}
 
-function initEncuesta(){
-  encReady=true;
-  renderEncuesta();
-}
-
-function eCanSub(){
-  return Object.keys(eAns).length===12&&eCampos.nombre&&eCampos.cedula&&eCampos.correo&&eCampos.area&&eCampos.tienda;
-}
-function eMissing(){
+function eCanSub(){return Object.keys(eAns).length===12&&eC.nombre&&eC.cedula&&eC.correo&&eC.tienda&&eC.feIni&&eC.feFin;}
+function eMiss(){
   const m=[];
-  if(!eCampos.nombre)m.push('nombre');if(!eCampos.cedula)m.push('cédula');
-  if(!eCampos.correo)m.push('correo');if(!eCampos.area)m.push('área');if(!eCampos.tienda)m.push('tienda');
-  const r=12-Object.keys(eAns).length;if(r>0)m.push(r+' pregunta'+(r>1?'s':''));
-  return m;
+  if(!eC.nombre)m.push('nombre');if(!eC.cedula)m.push('cédula');if(!eC.correo)m.push('correo');
+  if(!eC.tienda)m.push('tienda');if(!eC.feIni)m.push('fecha inicio FE');if(!eC.feFin)m.push('fecha fin FE');
+  const r=12-Object.keys(eAns).length;if(r>0)m.push(r+' pregunta'+(r>1?'s':''));return m;
 }
 
 function renderEncuesta(){
   let h=`<div class="card">
     <div class="lbl" style="margin-bottom:12px">Datos del colaborador</div>
-    <label class="lbl">Nombre *</label><input id="en" value="${esc(eCampos.nombre||'')}" placeholder="Nombre completo" oninput="eCampos.nombre=this.value;eUpdateBtn()" style="margin-bottom:8px">
-    <label class="lbl">Apellido</label><input id="eap" value="${esc(eCampos.apellido||'')}" placeholder="Apellidos" oninput="eCampos.apellido=this.value" style="margin-bottom:0">
+    <label class="lbl">Nombre completo *</label>
+    <input value="${esc(eC.nombre||'')}" placeholder="Nombre completo" oninput="eC.nombre=this.value;eUpBtn()" style="margin-bottom:8px">
     <div class="row2">
-      <div class="col"><label class="lbl">Cédula *</label><input id="ec" value="${esc(eCampos.cedula||'')}" placeholder="V-00000000" oninput="eCampos.cedula=this.value;eUpdateBtn()"></div>
-      <div class="col"><label class="lbl">Correo *</label><input id="eco" type="email" value="${esc(eCampos.correo||'')}" placeholder="correo@gmail.com" oninput="eCampos.correo=this.value;eUpdateBtn()"></div>
+      <div class="col"><label class="lbl">Cédula o DNI *</label><input value="${esc(eC.cedula||'')}" placeholder="Ej. 28122455" oninput="eC.cedula=this.value;eUpBtn()"></div>
+      <div class="col"><label class="lbl">Correo *</label><input type="email" value="${esc(eC.correo||'')}" placeholder="correo@gmail.com" oninput="eC.correo=this.value;eUpBtn()"></div>
     </div>
     <div class="row2">
-      <div class="col"><label class="lbl">Área *</label><input id="ea" value="${esc(eCampos.area||'')}" placeholder="Misceláneos, Caja..." oninput="eCampos.area=this.value;eUpdateBtn()"></div>
-      <div class="col"><label class="lbl">Tienda *</label><input id="et" value="${esc(eCampos.tienda||'')}" placeholder="Fuerzas Armadas..." oninput="eCampos.tienda=this.value;eUpdateBtn()"></div>
+      <div class="col"><label class="lbl">País *</label>
+        <select onchange="eC.pais=this.value;eC.tienda='';renderEncuesta()">
+          <option value="Venezuela" ${(eC.pais||'Venezuela')==='Venezuela'?'selected':''}>🇻🇪 Venezuela</option>
+          <option value="Colombia" ${eC.pais==='Colombia'?'selected':''}>🇨🇴 Colombia</option>
+          <option value="Argentina" ${eC.pais==='Argentina'?'selected':''}>🇦🇷 Argentina</option>
+        </select>
+      </div>
+      <div class="col"><label class="lbl">Tienda *</label>
+        <select id="e-tienda" onchange="eC.tienda=this.value;eUpBtn()">
+          ${tiendasOptions(eC.pais||'Venezuela').replace(`value="${esc(eC.tienda||'')}"`,`value="${esc(eC.tienda||'')}" selected`)}
+        </select>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="col"><label class="lbl">Fecha inicio FE *</label><input type="date" value="${esc(eC.feIni||'')}" oninput="eC.feIni=this.value;eUpBtn()"></div>
+      <div class="col"><label class="lbl">Fecha fin FE *</label><input type="date" value="${esc(eC.feFin||'')}" oninput="eC.feFin=this.value;eUpBtn()"></div>
+    </div>
+    <div style="margin-top:10px;display:flex;align-items:center;gap:8px;padding:9px;background:#F8FAFC;border-radius:8px;border:1px solid #E2E8F0">
+      <input type="checkbox" id="e-copia" style="width:16px;height:16px;margin:0;accent-color:var(--n)" ${eC.enviarCopia?'checked':''} onchange="eC.enviarCopia=this.checked">
+      <label for="e-copia" style="font-size:12px;color:#334155;cursor:pointer;width:auto">Recibir copia de mis respuestas por correo</label>
     </div>
   </div>
   <div class="scale-leg">
-    ${[1,2,3,4,5].map(v=>`<div class="leg-i"><div class="leg-d" style="background:${SC[v-1]}">${v}</div><span>${['T.desac.','Desac.','Neutral','De ac.','T.ac.'][v-1]}</span></div>`).join('')}
+    ${[1,2,3,4,5].map(v=>`<div class="leg-i"><div class="leg-d" style="background:${SC_E[v-1]}">${v}</div><span>${['T.desac.','Desac.','Neutral','De ac.','T.ac.'][v-1]}</span></div>`).join('')}
   </div>`;
 
   SURVEY.forEach(sec=>{
-    h+=`<div style="margin-bottom:20px">
-      <div class="sec-hdr"><div class="sec-num">${sec.n}</div><div class="sec-nm">${sec.t}</div><div class="sec-ln"></div></div>`;
+    h+=`<div style="margin-bottom:18px"><div class="sec-hdr"><div class="sec-num">${sec.n}</div><div class="sec-nm">${sec.t}</div><div class="sec-ln"></div></div>`;
     sec.qs.forEach(q=>{
       const sel=eAns[q.id];
       h+=`<div class="q-card ${sel?'ans':''}" id="qc-${q.id}">
-        <div class="q-text"><span class="q-num">P${q.id}.</span>${q.t}${sel?` <i class="ti ti-circle-check" style="color:var(--g);font-size:13px"></i>`:''}</div>
-        <div class="scale-row">
-          ${[1,2,3,4,5].map(v=>{const is=sel===v,col=SC[v-1];return`<button class="sbtn" onclick="eSelect(${q.id},${v})" aria-label="${SF[v-1]}" style="${is?`background:${col};color:white;border-color:${col}`:''}"> ${v}</button>`;}).join('')}
-        </div>
+        <div class="q-text"><span class="q-num">P${q.id}.</span>${q.t}${sel?` <i class="ti ti-circle-check" style="color:var(--g);font-size:12px"></i>`:''}</div>
+        <div class="scale-row">${[1,2,3,4,5].map(v=>{const is=sel===v,col=SC_E[v-1];return`<button class="sbtn" onclick="eSelect(${q.id},${v})" aria-label="${SF_E[v-1]}" style="${is?`background:${col};color:white;border-color:${col}`:''}"> ${v}</button>`;}).join('')}</div>
         <div class="send"><span>← En desacuerdo</span><span>De acuerdo →</span></div>
       </div>`;
     });
     h+=`</div>`;
   });
 
-  const m=eMissing();
+  const m=eMiss();
   h+=`<div class="card"><label class="lbl">Comentarios (opcional)</label>
-    <textarea id="ecom" placeholder="¿Qué mejorarías? ¿Qué fue lo más valioso?" oninput="eCampos.comentarios=this.value">${esc(eCampos.comentarios||'')}</textarea>
+    <textarea placeholder="¿Qué mejorarías? ¿Qué fue lo más valioso?" oninput="eC.comentarios=this.value">${esc(eC.comentarios||'')}</textarea>
   </div>
   <div class="hint" id="e-hint">${m.length?`<span class="hint-txt">Faltan: ${m.join(' · ')}</span>`:''}</div>
-  <button class="btn-submit" id="e-btn" onclick="submitEncuesta()" ${eCanSub()?'':'disabled'}>
-    <i class="ti ti-send" style="font-size:15px"></i> Enviar encuesta
-  </button><div style="height:12px"></div>`;
+  <button class="btn-submit" id="e-btn" onclick="submitEnc()" ${eCanSub()?'':'disabled'}>
+    <i class="ti ti-send" style="font-size:14px"></i> Enviar encuesta
+  </button><div style="height:10px"></div>`;
   document.getElementById('enc-body').innerHTML=h;
 }
 
 function eSelect(qid,val){
   eAns[qid]=val;
   const a=Object.keys(eAns).length;
-  document.getElementById('ep-fill').style.width=(a/12*100)+'%';
-  document.getElementById('ep-lbl').textContent=a+'/12';
+  document.getElementById('ep-f').style.width=(a/12*100)+'%';
+  document.getElementById('ep-l').textContent=a+'/12';
   renderEncuesta();
-  document.getElementById('e-btn')?.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
-function eUpdateBtn(){
-  const btn=document.getElementById('e-btn');if(!btn)return;
-  btn.disabled=!eCanSub();
-  const m=eMissing(),h=document.getElementById('e-hint');
+function eUpBtn(){
+  const btn=document.getElementById('e-btn');if(!btn)return;btn.disabled=!eCanSub();
+  const m=eMiss(),h=document.getElementById('e-hint');
   if(h)h.innerHTML=m.length?`<span class="hint-txt">Faltan: ${m.join(' · ')}</span>`:'';
 }
-
-async function submitEncuesta(){
+async function submitEnc(){
   if(!eCanSub())return;
   const btn=document.getElementById('e-btn');btn.disabled=true;
-  btn.innerHTML='<i class="ti ti-loader-2" style="animation:spin .8s linear infinite;font-size:15px"></i> Enviando...';
-  const all=Object.values(eAns);
-  const prom=parseFloat((all.reduce((a,b)=>a+b,0)/12).toFixed(2));
+  btn.innerHTML='<i class="ti ti-loader-2" style="animation:spin .8s linear infinite;font-size:14px"></i> Enviando...';
+  const all=Object.values(eAns),prom=parseFloat((all.reduce((a,b)=>a+b,0)/12).toFixed(2));
   await postData({type:'encuesta',data:{
-    nombre:eCampos.nombre,apellido:eCampos.apellido||'',cedula:eCampos.cedula,
-    correo:eCampos.correo,tienda:eCampos.tienda,area:eCampos.area,
+    nombre:eC.nombre,cedula:eC.cedula,correo:eC.correo,pais:eC.pais,tienda:eC.tienda,
+    feIni:eC.feIni,feFin:eC.feFin,enviarCopia:eC.enviarCopia,
     ...Object.fromEntries([1,2,3,4,5,6,7,8,9,10,11,12].map(i=>['p'+i,eAns[i]||0])),
-    promedio:prom,s1:secAvg([1,2]).toFixed(2),s2:secAvg([3,4,5,6]).toFixed(2),
-    s3:secAvg([7,8]).toFixed(2),s4:secAvg([9,10]).toFixed(2),s5:secAvg([11,12]).toFixed(2),
-    comentarios:eCampos.comentarios||''
+    promedio:prom,s1:secAv([1,2]).toFixed(2),s2:secAv([3,4,5,6]).toFixed(2),
+    s3:secAv([7,8]).toFixed(2),s4:secAv([9,10]).toFixed(2),s5:secAv([11,12]).toFixed(2),
+    comentarios:eC.comentarios||''
   }});
-  showEncResult(prom);
+  showEncRes(prom);
 }
-
-function showEncResult(prom){
-  const oc=sColor(prom);
-  const secs=[{l:'Experiencia',ids:[1,2]},{l:'Procesos',ids:[3,4,5,6]},{l:'Instructor',ids:[7,8]},{l:'Herramientas',ids:[9,10]},{l:'Confianza',ids:[11,12]}];
+function showEncRes(prom){
+  const oc=eSC(prom);
+  const ss=[{l:'Experiencia',ids:[1,2]},{l:'Procesos',ids:[3,4,5,6]},{l:'Instructor',ids:[7,8]},{l:'Herramientas',ids:[9,10]},{l:'Confianza',ids:[11,12]}];
   document.getElementById('enc-body').innerHTML=`<div class="success">
-    <div class="suc-icon"><i class="ti ti-check"></i></div>
-    <h2 style="font-size:19px;font-weight:700;margin-bottom:4px">¡Respuesta enviada!</h2>
-    <p style="font-size:12px;color:#64748B;margin-bottom:20px">${esc(eCampos.nombre)} · ${esc(eCampos.tienda)}</p>
+    <div class="suc-icon" style="background:var(--g)"><i class="ti ti-check" style="color:white;font-size:30px"></i></div>
+    <h2 style="font-size:18px;font-weight:700;margin-bottom:4px">¡Respuesta enviada!</h2>
+    <p style="font-size:12px;color:#64748B;margin-bottom:18px">${esc(eC.nombre)} · ${esc(eC.tienda)} · ${esc(eC.pais)}</p>
+    ${eC.enviarCopia?`<div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;padding:8px 12px;margin-bottom:14px;font-size:11px;color:#15803D"><i class="ti ti-mail" style="margin-right:4px"></i>Se enviará una copia a ${esc(eC.correo)}</div>`:''}
     <div class="card" style="text-align:center;margin-bottom:12px">
-      <div class="lbl" style="margin-bottom:8px">Puntuación general</div>
-      <div style="font-size:50px;font-weight:700;color:${oc};line-height:1;margin-bottom:4px">${prom}</div>
-      <div style="font-size:11px;color:#94A3B8;margin-bottom:10px">sobre 5.0</div>
-      <span class="badge" style="background:${oc}22;color:${oc}">${sLbl(prom)}</span>
+      <div class="stat-lbl" style="margin-bottom:7px">Puntuación general</div>
+      <div style="font-size:48px;font-weight:700;color:${oc};line-height:1;margin-bottom:4px">${prom}</div>
+      <div style="font-size:11px;color:#94A3B8;margin-bottom:8px">sobre 5.0</div>
+      <span class="badge" style="background:${oc}22;color:${oc}">${eSL(prom)}</span>
     </div>
     <div class="card">
-      <div class="lbl" style="margin-bottom:10px">Por sección</div>
-      ${secs.map(s=>{const a=parseFloat(secAvg(s.ids).toFixed(1));const sc=sColor(a);return`<div class="res-bar">
-        <div class="res-hdr"><span>${s.l}</span><span style="font-weight:600;color:${sc}">${a}</span></div>
-        <div class="bar-track"><div class="bar-fill" style="width:${a/5*100}%;background:${sc}"></div></div>
-      </div>`;}).join('')}
+      <div class="lbl" style="margin-bottom:9px">Por sección</div>
+      ${ss.map(s=>{const a=parseFloat(secAv(s.ids).toFixed(1));const sc=eSC(a);return`<div class="res-bar"><div class="res-hdr"><span>${s.l}</span><span style="font-weight:600;color:${sc}">${a}</span></div><div class="bar-track"><div class="bar-fill" style="width:${a/5*100}%;background:${sc}"></div></div></div>`;}).join('')}
     </div>
-    <button class="btn-submit" onclick="resetEncuesta()" style="margin-top:4px"><i class="ti ti-plus" style="font-size:15px"></i> Nueva respuesta</button>
+    <div style="display:flex;gap:8px;margin-top:4px">
+      <button class="btn-sec" style="flex:1;justify-content:center" onclick="resetEnc()"><i class="ti ti-plus" style="font-size:13px"></i> Nueva</button>
+      <button class="btn-sec" style="flex:1;justify-content:center" onclick="go('home')"><i class="ti ti-home-2" style="font-size:13px"></i> Inicio</button>
+    </div>
   </div>`;
   window.scrollTo(0,0);
 }
+function resetEnc(){eAns={};eC={pais:'Venezuela',enviarCopia:false};document.getElementById('ep-f').style.width='0%';document.getElementById('ep-l').textContent='0/12';renderEncuesta();}
 
-function resetEncuesta(){eAns={};eCampos={};document.getElementById('ep-fill').style.width='0%';document.getElementById('ep-lbl').textContent='0/12';renderEncuesta();}
-
-// ═══════════════════════════════════════════════════════════════════════
-// MÓDULO 2: CHECKLIST DEL INSTRUCTOR
-// ═══════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
+// MÓDULO 2: CHECKLIST INSTRUCTOR
+// ══════════════════════════════════════════════
+const GRUPOS_INSTR=['5 días','7 días','10 días'];
 const DIAS=[
   {id:'D1',label:'Día 1 — Bienvenida e Inducción',secs:[
     {n:'Plan de Inducción',items:['¿Completó el curso Inicio 2.0 en Academia Farmatodo?','¿Conoce la misión, visión y valores de Farmatodo?','¿Conoce los indicadores de gestión (venta, merma, CSAT, conciliación)?','¿Conoce los 5 Pilares de la Operación?','¿Usa correctamente el uniforme? ¿Conoce el manual de imagen corporativa?','¿Conoce y maneja el ADT?']},
@@ -547,200 +627,221 @@ const DIAS=[
     {n:'Evaluación Integral',items:['¿Aprobó la evaluación integral de todos los procesos de APV en Farmacia Escuela?']}
   ]}
 ];
+const ID7={id:'D7',label:'Día 6–7 — Refuerzo específico',secs:[{n:'Refuerzo Focalizado',items:['¿El colaborador consolidó los procesos con mayor debilidad identificados en D5?','¿Demostró mejora medible en el proceso focalizado?']}]};
 
-let instrReady=false, iMode='masivo', iActiveC=0;
-let iData={instructor:'',fe:'',fechaInicio:'',grupo:'G1',c1:'',c2:'',c3:'',ans:{},obs:{}};
+let instrReady=false,iMode='masivo',iAC=0;
+let iD={instructor:'',fe:'',feIni:'',feFin:'',grupo:'5 días',c1:'',c2:'',c3:'',ans:{},obs:{}};
 
 function iKey(did,si,ii,ci){return `${did}_${si}_${ii}_${ci}`;}
-function instrDias(){return iData.grupo==='G2'?DIAS:DIAS.filter(d=>d.id!=='D6_10');}
-function instrCnt(){
-  let tot=0,fil=0;const nc=Math.max([iData.c1,iData.c2,iData.c3].filter(x=>x.trim()).length,1);
-  instrDias().forEach(d=>d.secs.forEach((s,si)=>s.items.forEach((_,ii)=>{for(let c=0;c<nc;c++){tot++;if(iData.ans[iKey(d.id,si,ii,c)])fil++;}})));
-  return{tot,fil,pct:tot?Math.round(fil/tot*100):0};
+function iDias(){
+  const g=iD.grupo;const base=DIAS.filter(d=>d.id!=='D6_10');
+  if(g==='10 días')return DIAS;
+  if(g==='7 días')return [...base,ID7];
+  return base;
 }
-
+function iCnt(){
+  let t=0,f=0;const nc=Math.max([iD.c1,iD.c2,iD.c3].filter(x=>x.trim()).length,1);
+  iDias().forEach(d=>d.secs.forEach((s,si)=>s.items.forEach((_,ii)=>{for(let c=0;c<nc;c++){t++;if(iD.ans[iKey(d.id,si,ii,c)])f++;}})));
+  return{t,f,pct:t?Math.round(f/t*100):0};
+}
 function initInstructor(){instrReady=true;renderInstructor();}
 
 function renderInstructor(){
-  const {tot,fil,pct}=instrCnt();
-  document.getElementById('instr-pct').textContent=pct+'%';
-  document.getElementById('instr-sub').textContent='FE: '+(iData.fe||'—')+' · '+iData.grupo;
-  const nc=[iData.c1,iData.c2,iData.c3].filter(x=>x.trim());
+  const {t,f,pct}=iCnt();
+  document.getElementById('ip-f').style.width=pct+'%';
+  document.getElementById('ip-l').textContent=pct+'%';
+  document.getElementById('isub').textContent=iD.fe||'Farmacia Escuela';
+  const nc=[iD.c1,iD.c2,iD.c3].filter(x=>x.trim());
 
   let h=`<div class="card">
-    <div class="lbl" style="margin-bottom:12px">Datos del instructor y grupo</div>
+    <div class="lbl" style="margin-bottom:11px">Datos del instructor y grupo</div>
     <div class="row2">
-      <div class="col"><label class="lbl">Instructor *</label><input value="${esc(iData.instructor)}" placeholder="Nombre del instructor" oninput="iData.instructor=this.value;renderInstructor()"></div>
-      <div class="col"><label class="lbl">Farmacia Escuela</label><input value="${esc(iData.fe)}" placeholder="Tienda FE" oninput="iData.fe=this.value;renderInstructor()"></div>
+      <div class="col"><label class="lbl">Instructor *</label><input value="${esc(iD.instructor)}" placeholder="Nombre del instructor" oninput="iD.instructor=this.value;renderInstructor()"></div>
+      <div class="col"><label class="lbl">Farmacia Escuela</label><input value="${esc(iD.fe)}" placeholder="Tienda FE" oninput="iD.fe=this.value;renderInstructor()"></div>
     </div>
     <div class="row2">
-      <div class="col"><label class="lbl">Fecha inicio</label><input type="date" value="${esc(iData.fechaInicio)}" oninput="iData.fechaInicio=this.value"></div>
-      <div class="col"><label class="lbl">Grupo</label>
-        <select oninput="iData.grupo=this.value;renderInstructor()">
-          <option value="G1" ${iData.grupo==='G1'?'selected':''}>G1 — 5 días</option>
-          <option value="G2" ${iData.grupo==='G2'?'selected':''}>G2 — 10 días</option>
+      <div class="col"><label class="lbl">Fecha inicio *</label><input type="date" value="${esc(iD.feIni)}" oninput="iD.feIni=this.value"></div>
+      <div class="col"><label class="lbl">Fecha fin *</label><input type="date" value="${esc(iD.feFin)}" oninput="iD.feFin=this.value"></div>
+    </div>
+    <div class="row2" style="margin-top:9px">
+      <div class="col"><label class="lbl">Duración del grupo</label>
+        <select oninput="iD.grupo=this.value;renderInstructor()">
+          ${GRUPOS_INSTR.map(g=>`<option value="${g}" ${iD.grupo===g?'selected':''}>${g}</option>`).join('')}
         </select>
       </div>
     </div>
     <div style="margin-top:10px;padding-top:10px;border-top:1px solid #F1F5F9">
-      <div class="lbl" style="margin-bottom:8px">Colaboradores (hasta 3)</div>
-      <input value="${esc(iData.c1)}" placeholder="Colaborador 1 — Nombre completo" style="margin-bottom:6px" oninput="iData.c1=this.value;renderInstructor()">
-      <input value="${esc(iData.c2)}" placeholder="Colaborador 2 (opcional)" style="margin-bottom:6px" oninput="iData.c2=this.value;renderInstructor()">
-      <input value="${esc(iData.c3)}" placeholder="Colaborador 3 (opcional)" oninput="iData.c3=this.value;renderInstructor()">
-    </div>
+      <div class="lbl" style="margin-bottom:8px">Colaboradores del grupo</div>`;
+
+  if(iMode==='masivo'){
+    h+=`<input value="${esc(iD.c1)}" placeholder="Colaborador 1 — Nombre completo" style="margin-bottom:5px" oninput="iD.c1=this.value;renderInstructor()">
+        <input value="${esc(iD.c2)}" placeholder="Colaborador 2 (opcional)" style="margin-bottom:5px" oninput="iD.c2=this.value;renderInstructor()">
+        <input value="${esc(iD.c3)}" placeholder="Colaborador 3 (opcional)" oninput="iD.c3=this.value;renderInstructor()">`;
+  } else {
+    h+=`<input value="${esc(iD['c'+(iAC+1)])}" placeholder="Nombre del colaborador" oninput="iD['c'+(iAC+1)]=this.value;renderInstructor()">`;
+  }
+  h+=`</div></div>
+
+  <div style="background:white;border:1px solid #E2E8F0;border-radius:9px;padding:9px 12px;margin-bottom:10px;display:flex;align-items:center;gap:9px">
+    <div style="flex:1;height:7px;background:#F1F5F9;border-radius:4px;overflow:hidden"><div style="height:7px;background:var(--b);border-radius:4px;width:${pct}%"></div></div>
+    <span style="font-size:11px;font-weight:600;color:var(--n)">${pct}%</span>
+    <span style="font-size:10px;color:#64748B">${f}/${t}</span>
   </div>
 
-  <div style="background:white;border:1px solid #E2E8F0;border-radius:10px;padding:10px 13px;margin-bottom:12px;display:flex;align-items:center;gap:10px">
-    <div style="flex:1;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden"><div style="height:8px;background:var(--b);border-radius:4px;width:${pct}%;transition:width .3s"></div></div>
-    <span style="font-size:12px;font-weight:600;color:var(--n)">${pct}%</span>
-    <span style="font-size:11px;color:#64748B">${fil}/${tot} ítems</span>
-  </div>
-
-  <div class="mode-toggle">
-    <button class="mtgl ${iMode==='masivo'?'on':''}" onclick="iMode='masivo';renderInstructor()">
-      <i class="ti ti-users" style="font-size:13px;margin-right:4px"></i> Masivo (3 a la vez)
-    </button>
-    <button class="mtgl ${iMode==='individual'?'on':''}" onclick="iMode='individual';renderInstructor()">
-      <i class="ti ti-user" style="font-size:13px;margin-right:4px"></i> Individual
-    </button>
+  <div class="mtgl-row">
+    <button class="mtgl ${iMode==='masivo'?'on':''}" onclick="iMode='masivo';renderInstructor()"><i class="ti ti-users" style="font-size:12px"></i> Masivo (3 a la vez)</button>
+    <button class="mtgl ${iMode==='individual'?'on':''}" onclick="iMode='individual';renderInstructor()"><i class="ti ti-user" style="font-size:12px"></i> Individual</button>
   </div>`;
 
-  if(iMode==='individual'&&nc.length>0){
-    h+=`<div class="ctabs">
-      ${nc.map((c,i)=>`<button class="ctab ${iActiveC===i?'on':''}" onclick="iActiveC=${i};renderInstructor()">${c.split(' ')[0]}</button>`).join('')}
+  if(iMode==='individual'&&nc.length>1){
+    h+=`<div style="display:flex;gap:4px;margin-bottom:10px">
+      ${nc.map((c,i)=>`<button style="flex:1;padding:7px 4px;border-radius:7px;border:1.5px solid ${iAC===i?'var(--n)':'#E2E8F0'};background:${iAC===i?'var(--n)':'white'};color:${iAC===i?'white':'#64748B'};font-size:10px;font-weight:600;cursor:pointer;font-family:'Montserrat',sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" onclick="iAC=${i};renderInstructor()">${c.split(' ')[0]||'C'+(i+1)}</button>`).join('')}
     </div>`;
   }
 
-  h+=`<div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;padding:9px 12px;margin-bottom:12px;font-size:11px;color:#15803D">
-    <strong>Escala:</strong> ✅ SÍ = Domina autónomamente &nbsp;·&nbsp; 🟡 AYUDA = Ejecuta con soporte &nbsp;·&nbsp; ❌ NO = No lo realizó / requiere refuerzo
+  h+=`<div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:7px;padding:8px 11px;margin-bottom:10px;font-size:10px;color:#15803D">
+    <strong>Escala:</strong> ✅ SÍ = Domina autónomamente &nbsp;·&nbsp; 🟡 CON AYUDA = Ejecuta con soporte &nbsp;·&nbsp; ❌ NO = No lo realizó / requiere refuerzo
   </div>`;
 
-  instrDias().forEach(d=>{
-    const totalD=d.secs.reduce((a,s)=>a+s.items.length,0)*Math.max(nc.length,1);
-    let filD=0;d.secs.forEach((s,si)=>s.items.forEach((_,ii)=>{for(let c=0;c<Math.max(nc.length,1);c++){if(iData.ans[iKey(d.id,si,ii,c)])filD++;}}));
-    const done=filD===totalD&&totalD>0;
-    h+=`<div style="margin-bottom:8px">
+  iDias().forEach(d=>{
+    const ncc=Math.max(nc.length,1);
+    let filD=0,totD=0;
+    d.secs.forEach((s,si)=>s.items.forEach((_,ii)=>{for(let c=0;c<ncc;c++){totD++;if(iD.ans[iKey(d.id,si,ii,c)])filD++;}}));
+    const done=filD===totD&&totD>0;
+    h+=`<div style="margin-bottom:7px">
       <div class="acc-h ${done?'done':''}" onclick="toggleAcc('ia-${d.id}')" id="iah-${d.id}">
         <span>${d.label}</span>
-        <div style="display:flex;align-items:center;gap:6px">
-          <span class="badge">${filD}/${totalD}</span>
-          <i class="ti ti-chevron-down" id="iai-${d.id}" style="font-size:13px;transition:transform .2s"></i>
+        <div style="display:flex;align-items:center;gap:5px">
+          <span class="badge">${filD}/${totD}</span>
+          <i class="ti ti-chevron-down" id="iai-${d.id}" style="font-size:12px;transition:transform .2s"></i>
         </div>
       </div>
       <div class="acc-body" id="ia-${d.id}">`;
+
     d.secs.forEach((sec,si)=>{
       h+=`<div class="sec-tag">${sec.n}</div>`;
       sec.items.forEach((item,ii)=>{
         h+=`<div class="item-card"><div class="item-txt">${item}</div>`;
-        const colabs=nc.length>0?nc:[iData.c1||'Colaborador'];
-        if(iMode==='masivo'){
-          colabs.forEach((c,ci)=>{
-            const k=iKey(d.id,si,ii,ci),v=iData.ans[k]||'';
-            h+=`<div class="c-row"><span class="c-label" title="${esc(c)}">${c.split(' ')[0]||'C'+(ci+1)}</span>
-              <div class="tgl-row" style="flex:1">
-                <button class="tgl si ${v==='si'?'on':''}" onclick="iSet('${d.id}',${si},${ii},${ci},'si')">✅ SÍ</button>
-                <button class="tgl ay ${v==='ayuda'?'on':''}" onclick="iSet('${d.id}',${si},${ii},${ci},'ayuda')">🟡 AYUDA</button>
-                <button class="tgl no ${v==='no'?'on':''}" onclick="iSet('${d.id}',${si},${ii},${ci},'no')">❌ NO</button>
-              </div>
-            </div>`;
-          });
-        } else {
-          const ci=iActiveC,k=iKey(d.id,si,ii,ci),v=iData.ans[k]||'';
-          h+=`<div class="tgl-row">
-            <button class="tgl si ${v==='si'?'on':''}" onclick="iSet('${d.id}',${si},${ii},${ci},'si')">✅ SÍ</button>
-            <button class="tgl ay ${v==='ayuda'?'on':''}" onclick="iSet('${d.id}',${si},${ii},${ci},'ayuda')">🟡 CON AYUDA</button>
-            <button class="tgl no ${v==='no'?'on':''}" onclick="iSet('${d.id}',${si},${ii},${ci},'no')">❌ NO</button>
+        const colabs=nc.length>0?nc:['Colaborador'];
+        const showColabs=iMode==='masivo'?colabs:[colabs[iAC]||colabs[0]||'Colaborador'];
+        const showCIs=iMode==='masivo'?colabs.map((_,i)=>i):[iAC];
+
+        showCIs.forEach(ci=>{
+          const cn=colabs[ci]||'Colab '+(ci+1);
+          const k=iKey(d.id,si,ii,ci),v=iD.ans[k]||'';
+          const vCls=v==='si'?'v-si':v==='ayuda'?'v-ay':v==='no'?'v-no':'';
+          h+=`<div class="colab-sel-row">
+            <span class="c-lbl" title="${esc(cn)}">${cn.split(' ')[0]||'C'+(ci+1)}</span>
+            <select class="chk-sel ${vCls}" onchange="iSetSel(this,'${d.id}',${si},${ii},${ci})">
+              <option value="">— Seleccionar —</option>
+              <option value="si" ${v==='si'?'selected':''}>✅ SÍ</option>
+              <option value="ayuda" ${v==='ayuda'?'selected':''}>🟡 CON AYUDA</option>
+              <option value="no" ${v==='no'?'selected':''}>❌ NO</option>
+            </select>
           </div>`;
-        }
+        });
+
         const ok=`iao-${d.id}-${si}-${ii}`;
-        h+=`<span class="obs-link" onclick="toggleObs('${ok}')"><i class="ti ti-message-2" style="font-size:11px"></i> Obs.</span>
-          <div class="obs-box" id="${ok}"><textarea rows="2" placeholder="Observación..." style="margin-top:4px" onchange="iData.obs['${ok}']=this.value">${esc(iData.obs[ok]||'')}</textarea></div>
+        h+=`<span class="obs-link" onclick="toggleObs('${ok}')"><i class="ti ti-message-2" style="font-size:10px"></i> Obs.</span>
+          <div class="obs-box" id="${ok}"><textarea rows="2" placeholder="Observación..." style="margin-top:4px;font-size:11px" onchange="iD.obs['${ok}']=this.value">${esc(iD.obs[ok]||'')}</textarea></div>
         </div>`;
       });
     });
     h+=`</div></div>`;
   });
 
-  const canI=iData.instructor.trim()&&(iData.c1.trim()||iData.c2.trim()||iData.c3.trim())&&fil>0;
-  h+=`<div class="hint" id="ih">${!iData.instructor.trim()?'<span class="hint-txt">Ingresa el nombre del instructor y al menos 1 colaborador</span>':''}</div>
-  <button class="btn-submit" onclick="submitInstructor()" ${canI?'':'disabled'}>
-    <i class="ti ti-device-floppy" style="font-size:15px"></i> Guardar checklist
-  </button><div style="height:12px"></div>`;
+  const canI=iD.instructor.trim()&&iD.feIni&&iD.feFin&&(iD.c1.trim()||iD.c2.trim()||iD.c3.trim())&&f>0;
+  h+=`<div class="hint" id="ih">${!iD.instructor.trim()||!iD.feIni?'<span class="hint-txt">Completa: instructor, fechas y al menos 1 colaborador</span>':''}</div>
+  <button class="btn-submit" onclick="submitInstr()" ${canI?'':'disabled'}>
+    <i class="ti ti-device-floppy" style="font-size:14px"></i> Guardar checklist
+  </button>
+  <div style="display:flex;gap:8px;margin-top:8px">
+    <button class="btn-sec" style="flex:1;justify-content:center" onclick="go('home')"><i class="ti ti-home-2" style="font-size:13px"></i> Inicio</button>
+  </div><div style="height:10px"></div>`;
   document.getElementById('instr-body').innerHTML=h;
 }
 
-function iSet(did,si,ii,ci,val){
-  iData.ans[iKey(did,si,ii,ci)]=val;
-  renderInstructor();
+function iSetSel(el,did,si,ii,ci){
+  const val=el.value;iD.ans[iKey(did,si,ii,ci)]=val;
+  el.className='chk-sel'+(val==='si'?' v-si':val==='ayuda'?' v-ay':val==='no'?' v-no':'');
+  const {t,f,pct}=iCnt();
+  document.getElementById('ip-f').style.width=pct+'%';document.getElementById('ip-l').textContent=pct+'%';
+  // Update accordion badge
   const body=document.getElementById('ia-'+did);
-  if(body){body.classList.add('open');document.getElementById('iah-'+did)?.classList.add('open');const ic=document.getElementById('iai-'+did);if(ic)ic.style.transform='rotate(180deg)';}
+  if(body&&!body.classList.contains('open')){body.classList.add('open');document.getElementById('iah-'+did)?.classList.add('open');const ic=document.getElementById('iai-'+did);if(ic)ic.style.transform='rotate(180deg)';}
 }
 
-async function submitInstructor(){
-  const btn=document.querySelector('#instr-body .btn-submit');
-  if(btn){btn.disabled=true;btn.innerHTML='<i class="ti ti-loader-2" style="animation:spin .8s linear infinite;font-size:15px"></i> Guardando...';}
-  await postData({type:'instructor',data:{...iData}});
+async function submitInstr(){
+  const btn=document.querySelector('#instr-body .btn-submit');if(btn){btn.disabled=true;btn.innerHTML='<i class="ti ti-loader-2" style="animation:spin .8s linear infinite;font-size:14px"></i> Guardando...';}
+  await postData({type:'instructor',data:{...iD,submittedBy:CU?.correo}});
   alert('✅ Checklist del instructor guardado correctamente.');
-  iData={instructor:'',fe:'',fechaInicio:'',grupo:'G1',c1:'',c2:'',c3:'',ans:{},obs:{}};
+  iD={instructor:'',fe:'',feIni:'',feFin:'',grupo:'5 días',c1:'',c2:'',c3:'',ans:{},obs:{}};
   renderInstructor();
 }
 
-// ═══════════════════════════════════════════════════════════════════════
-// MÓDULO 3: CHECKLIST GERENTE DE ÁREA
-// ═══════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
+// MÓDULO 3: CHECKLIST GERENTE DE TIENDA
+// ══════════════════════════════════════════════
 const GREAS=[
   {area:'Onboarding',items:['¿Completó el curso Inicio 2.0 en Academia Farmatodo?','¿Completó la encuesta de satisfacción Inicio 2.0 y Farmacia Escuela?']},
   {area:'Servicio al Cliente',items:['Aplica las 5 conductas de servicio en todas las interacciones de forma espontánea','Conoce cómo sus acciones impactan el CSAT y actúa en consecuencia','Asesora al cliente correctamente en piso, farmacia y autofarmacia','Conoce y ofrece todos los servicios de la tienda (autopago, domicilios, farmacéuticos)']},
   {area:'Imagen Comercial',items:['Conoce la estrategia comercial: layout, planograma y su impacto en el negocio','Monta y surte planogramas correctamente aplicando FIFO/FEFO sin supervisión','Etiqueta correctamente en misceláneos','Usa SuperApp y handheld de forma autónoma para gestionar planogramas']},
   {area:'Inventario y Depósito',items:['Realiza conteos con handheld de forma autónoma y genera el reporte de discrepancias','Maneja el depósito correctamente aplicando FIFO/FEFO en la rotación del producto','Identifica y gestiona productos próximos a vencer en misceláneos y farmacia según PAP']},
   {area:'Caja y Procesos Administrativos',items:['Opera la caja de forma autónoma: apertura, atención, cobro en todos los medios de pago','¿Atendió ≥3 transacciones con distintos medios de pago?','Ejecuta el cierre y cuadre de caja de forma correcta y autónoma','Atiende cajas de autopago y conoce el protocolo de domicilios']},
-  {area:'Competencias Comportamentales',items:['Orientación al cliente: interactúa amable, responde con prontitud, demuestra las conductas','Orientación a resultados: busca mejorar, evita retrabajos, se ocupa por resultados de calidad','Sentido de urgencia: actúa ante imprevistos, diferencia urgente vs. importante','Orden y detalle: mantiene orden en su espacio, verifica su trabajo','Energía y conciencia de equipo: mantiene ritmo constante, demuestra entusiasmo']}
+  {area:'Competencias Comportamentales',items:['Orientación al cliente: interactúa amable, responde con prontitud','Orientación a resultados: busca mejorar, evita retrabajos','Sentido de urgencia: actúa ante imprevistos, diferencia urgente vs. importante','Orden y detalle: mantiene orden en su espacio, verifica su trabajo','Energía y conciencia de equipo: mantiene ritmo constante, demuestra entusiasmo']}
 ];
+let gerReady=false,gMode='individual',gAC=0;
+let gD={gerente:'',supervisor:'',c1:'',c2:'',c3:'',tienda:'',dias:'5',fechaEval:'',ans:{},obs:{},rec:'',plan:''};
 
-let gerReady=false;
-let gData={gerente:'',supervisor:'',colaborador:'',cedula:'',tienda:'',dias:'5',fechaEval:'',ans:{},obs:{},rec:'',plan:''};
-
+function gKey(ai,ii,ci){return`${ai}_${ii}_${ci}`;}
 function gCnt(){
-  let tot=0,dom=0,pro=0,nod=0;
-  GREAS.forEach((a,ai)=>a.items.forEach((_,ii)=>{
-    tot++;const k=ai+'_'+ii,v=gData.ans[k];
-    if(v==='dom')dom++;else if(v==='pro')pro++;else if(v==='nod')nod++;
-  }));
-  return{tot,dom,pro,nod,fil:dom+pro+nod};
+  let t=0,dom=0,pro=0,nod=0;const nc=Math.max(gMode==='masivo'?[gD.c1,gD.c2,gD.c3].filter(x=>x.trim()).length:1,1);
+  GREAS.forEach((a,ai)=>a.items.forEach((_,ii)=>{for(let c=0;c<nc;c++){t++;const k=gKey(ai,ii,c),v=gD.ans[k];if(v==='dom')dom++;else if(v==='pro')pro++;else if(v==='nod')nod++;}}));
+  return{t,dom,pro,nod,f:dom+pro+nod};
 }
-
 function initGerente(){gerReady=true;renderGerente();}
 
 function renderGerente(){
-  const {tot,dom,pro,nod,fil}=gCnt();
-  const pct=tot?Math.round(fil/tot*100):0;
-  document.getElementById('ger-pct').textContent=pct+'%';
+  const {t,dom,pro,nod,f}=gCnt();const pct=t?Math.round(f/t*100):0;
+  document.getElementById('gp-f').style.width=pct+'%';document.getElementById('gp-l').textContent=pct+'%';
 
   let h=`<div class="card">
-    <div class="lbl" style="margin-bottom:12px">Datos de la evaluación</div>
+    <div class="lbl" style="margin-bottom:11px">Datos de la evaluación</div>
     <div class="row2">
-      <div class="col"><label class="lbl">Gerente de Área *</label><input value="${esc(gData.gerente)}" placeholder="Jorge Díaz" oninput="gData.gerente=this.value;gerUpdateBtn()"></div>
-      <div class="col"><label class="lbl">Supervisor inmediato</label><input value="${esc(gData.supervisor)}" placeholder="Paola Ballestero" oninput="gData.supervisor=this.value"></div>
+      <div class="col"><label class="lbl">Gerente de Tienda *</label><input value="${esc(gD.gerente)}" placeholder="Jorge Díaz" oninput="gD.gerente=this.value;gUpBtn()"></div>
+      <div class="col"><label class="lbl">Supervisor inmediato</label><input value="${esc(gD.supervisor)}" placeholder="Paola Ballestero" oninput="gD.supervisor=this.value"></div>
     </div>
     <div class="row2">
-      <div class="col"><label class="lbl">Colaborador *</label><input value="${esc(gData.colaborador)}" placeholder="Nombre completo" oninput="gData.colaborador=this.value;gerUpdateBtn()"></div>
-      <div class="col"><label class="lbl">Cédula</label><input value="${esc(gData.cedula)}" placeholder="V-00000000" oninput="gData.cedula=this.value"></div>
-    </div>
-    <div class="row2">
-      <div class="col"><label class="lbl">Tienda destino *</label><input value="${esc(gData.tienda)}" placeholder="Ej. Esquina" oninput="gData.tienda=this.value;gerUpdateBtn()"></div>
+      <div class="col"><label class="lbl">Tienda destino *</label><input value="${esc(gD.tienda)}" placeholder="Ej. Esquina" oninput="gD.tienda=this.value;gUpBtn()"></div>
       <div class="col"><label class="lbl">Días en tienda</label>
-        <select oninput="gData.dias=this.value">
-          <option value="5" ${gData.dias==='5'?'selected':''}>5 días</option>
-          <option value="10" ${gData.dias==='10'?'selected':''}>10 días</option>
+        <select oninput="gD.dias=this.value">
+          <option value="5" ${gD.dias==='5'?'selected':''}>5 días</option>
+          <option value="7" ${gD.dias==='7'?'selected':''}>7 días</option>
+          <option value="10" ${gD.dias==='10'?'selected':''}>10 días</option>
         </select>
       </div>
     </div>
-    <div class="row2"><div class="col"><label class="lbl">Fecha evaluación</label><input type="date" value="${esc(gData.fechaEval)}" oninput="gData.fechaEval=this.value"></div></div>
-  </div>
+    <div class="row2">
+      <div class="col"><label class="lbl">Fecha evaluación</label>
+        <input type="date" value="${esc(gD.fechaEval)}" oninput="gD.fechaEval=this.value">
+        <div style="font-size:9px;color:#94A3B8;margin-top:3px">Debe realizarse 5–7 días después de llegar a la tienda</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px solid #F1F5F9">
+      <div class="lbl" style="margin-bottom:8px">Colaboradores a evaluar</div>`;
 
-  <div style="background:white;border:1px solid #E2E8F0;border-radius:10px;padding:10px 13px;margin-bottom:8px">
+  if(gMode==='masivo'){
+    h+=`<input value="${esc(gD.c1)}" placeholder="Colaborador 1 — Nombre completo" style="margin-bottom:5px" oninput="gD.c1=this.value;renderGerente()">
+        <input value="${esc(gD.c2)}" placeholder="Colaborador 2 (opcional)" style="margin-bottom:5px" oninput="gD.c2=this.value;renderGerente()">
+        <input value="${esc(gD.c3)}" placeholder="Colaborador 3 (opcional)" oninput="gD.c3=this.value;renderGerente()">`;
+  } else {
+    h+=`<input value="${esc(gD['c'+(gAC+1)])}" placeholder="Nombre del colaborador" oninput="gD['c'+(gAC+1)]=this.value;renderGerente()">`;
+  }
+  h+=`</div></div>
+
+  <div style="background:white;border:1px solid #E2E8F0;border-radius:9px;padding:9px 12px;margin-bottom:10px">
     <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
-      <div style="flex:1;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden"><div style="height:8px;background:var(--b);border-radius:4px;width:${pct}%"></div></div>
+      <div style="flex:1;height:7px;background:#F1F5F9;border-radius:4px;overflow:hidden"><div style="height:7px;background:var(--b);border-radius:4px;width:${pct}%"></div></div>
       <span style="font-size:11px;font-weight:600;color:var(--n)">${pct}%</span>
     </div>
     <div class="sum3">
@@ -750,189 +851,216 @@ function renderGerente(){
     </div>
   </div>
 
-  <div style="background:#FFF7ED;border:1px solid #FED7AA;border-radius:8px;padding:9px 12px;margin-bottom:12px;font-size:11px;color:#9A3412">
-    <strong>Escala:</strong> ✅ DOMINA = Autónomamente &nbsp;·&nbsp; 🟡 EN PROCESO = Necesita refuerzo &nbsp;·&nbsp; ❌ NO DOMINA = Requiere entrenamiento
+  <div class="mtgl-row">
+    <button class="mtgl ${gMode==='individual'?'on':''}" onclick="gMode='individual';gAC=0;renderGerente()"><i class="ti ti-user" style="font-size:12px"></i> Individual</button>
+    <button class="mtgl ${gMode==='masivo'?'on':''}" onclick="gMode='masivo';renderGerente()"><i class="ti ti-users" style="font-size:12px"></i> Masivo (3 a la vez)</button>
   </div>`;
 
+  const nc=[gD.c1,gD.c2,gD.c3].filter(x=>x.trim());
+  if(gMode==='individual'&&nc.length>1){
+    h+=`<div style="display:flex;gap:4px;margin-bottom:10px">
+      ${nc.map((c,i)=>`<button style="flex:1;padding:7px 4px;border-radius:7px;border:1.5px solid ${gAC===i?'var(--n)':'#E2E8F0'};background:${gAC===i?'var(--n)':'white'};color:${gAC===i?'white':'#64748B'};font-size:10px;font-weight:600;cursor:pointer;font-family:'Montserrat',sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" onclick="gAC=${i};renderGerente()">${c.split(' ')[0]||'C'+(i+1)}</button>`).join('')}
+    </div>`;
+  }
+
+  h+=`<div style="background:#FFF7ED;border:1px solid #FED7AA;border-radius:7px;padding:8px 11px;margin-bottom:10px;font-size:10px;color:#9A3412">
+    <strong>Escala:</strong> ✅ DOMINA = Ejecuta autónomamente &nbsp;·&nbsp; 🟡 EN PROCESO = Necesita refuerzo &nbsp;·&nbsp; ❌ NO DOMINA = Requiere entrenamiento
+  </div>`;
+
+  const showCIs=gMode==='masivo'?nc.map((_,i)=>i):[gAC];
+
   GREAS.forEach((area,ai)=>{
-    const t=area.items.length,f=area.items.filter((_,ii)=>gData.ans[ai+'_'+ii]).length;
-    const done=f===t;
-    h+=`<div style="margin-bottom:8px">
+    const nc2=Math.max(gMode==='masivo'?nc.length:1,1);
+    let filD=0,totD=0;
+    area.items.forEach((_,ii)=>{for(let c=0;c<nc2;c++){totD++;if(gD.ans[gKey(ai,ii,c)])filD++;}});
+    const done=filD===totD&&totD>0;
+    h+=`<div style="margin-bottom:7px">
       <div class="acc-h ${done?'done':''}" onclick="toggleAcc('ga-${ai}')" id="gah-${ai}">
         <span>${area.area}</span>
-        <div style="display:flex;align-items:center;gap:6px">
-          <span class="badge">${f}/${t}</span>
-          <i class="ti ti-chevron-down" id="gai-${ai}" style="font-size:13px;transition:transform .2s"></i>
+        <div style="display:flex;align-items:center;gap:5px">
+          <span class="badge">${filD}/${totD}</span>
+          <i class="ti ti-chevron-down" id="gai-${ai}" style="font-size:12px;transition:transform .2s"></i>
         </div>
       </div>
       <div class="acc-body" id="ga-${ai}">`;
+
     area.items.forEach((item,ii)=>{
-      const k=ai+'_'+ii,v=gData.ans[k]||'';
-      h+=`<div class="item-card">
-        <div class="item-txt">${item}</div>
-        <div class="tgl-row">
-          <button class="tgl dom ${v==='dom'?'on':''}" onclick="gSet(${ai},${ii},'dom')">✅ DOMINA</button>
-          <button class="tgl pro ${v==='pro'?'on':''}" onclick="gSet(${ai},${ii},'pro')">🟡 EN PROCESO</button>
-          <button class="tgl nod ${v==='nod'?'on':''}" onclick="gSet(${ai},${ii},'nod')">❌ NO DOMINA</button>
-        </div>
-        <span class="obs-link" onclick="toggleObs('go-${ai}-${ii}')"><i class="ti ti-message-2" style="font-size:11px"></i> Obs.</span>
-        <div class="obs-box" id="go-${ai}-${ii}"><textarea rows="2" placeholder="Observación..." style="margin-top:4px" onchange="gData.obs['${ai}_${ii}']=this.value">${esc(gData.obs[ai+'_'+ii]||'')}</textarea></div>
+      h+=`<div class="item-card"><div class="item-txt">${item}</div>`;
+      showCIs.forEach(ci=>{
+        const cn=nc[ci]||(gMode==='individual'?gD['c'+(gAC+1)]||'Colaborador':'Colab '+(ci+1));
+        const k=gKey(ai,ii,ci),v=gD.ans[k]||'';
+        const vCls=v==='dom'?'v-dom':v==='pro'?'v-pro':v==='nod'?'v-nod':'';
+        if(gMode==='masivo'){
+          h+=`<div class="colab-sel-row">
+            <span class="c-lbl" title="${esc(cn)}">${cn.split(' ')[0]||'C'+(ci+1)}</span>
+            <select class="chk-sel ${vCls}" onchange="gSetSel(this,${ai},${ii},${ci})">
+              <option value="">— Seleccionar —</option>
+              <option value="dom" ${v==='dom'?'selected':''}>✅ DOMINA</option>
+              <option value="pro" ${v==='pro'?'selected':''}>🟡 EN PROCESO</option>
+              <option value="nod" ${v==='nod'?'selected':''}>❌ NO DOMINA</option>
+            </select>
+          </div>`;
+        } else {
+          h+=`<select class="chk-sel ${vCls}" style="max-width:100%" onchange="gSetSel(this,${ai},${ii},${ci})">
+            <option value="">— Seleccionar —</option>
+            <option value="dom" ${v==='dom'?'selected':''}>✅ DOMINA</option>
+            <option value="pro" ${v==='pro'?'selected':''}>🟡 EN PROCESO</option>
+            <option value="nod" ${v==='nod'?'selected':''}>❌ NO DOMINA</option>
+          </select>`;
+        }
+      });
+      const ok=`go-${ai}-${ii}`;
+      h+=`<span class="obs-link" onclick="toggleObs('${ok}')"><i class="ti ti-message-2" style="font-size:10px"></i> Obs.</span>
+        <div class="obs-box" id="${ok}"><textarea rows="2" placeholder="Observación..." style="margin-top:4px;font-size:11px" onchange="gD.obs['${ai}_${ii}']=this.value">${esc(gD.obs[ai+'_'+ii]||'')}</textarea></div>
       </div>`;
     });
     h+=`</div></div>`;
   });
 
   h+=`<div class="card" style="margin-top:4px">
-    <div class="lbl" style="margin-bottom:10px">Resumen y recomendación</div>
+    <div class="lbl" style="margin-bottom:9px">Resumen y recomendación</div>
     <label class="lbl">Recomendación general</label>
-    <select oninput="gData.rec=this.value" style="margin-bottom:10px">
-      <option value="" ${!gData.rec?'selected':''}>Seleccionar...</option>
-      <option value="Sí" ${gData.rec==='Sí'?'selected':''}>✅ Sí — Listo para operar de forma independiente</option>
-      <option value="Con Supervisión" ${gData.rec==='Con Supervisión'?'selected':''}>🟡 Con Supervisión — Requiere acompañamiento</option>
-      <option value="No" ${gData.rec==='No'?'selected':''}>❌ No — Requiere entrenamiento adicional</option>
+    <select oninput="gD.rec=this.value" style="margin-bottom:9px">
+      <option value="" ${!gD.rec?'selected':''}>Seleccionar...</option>
+      <option value="Sí" ${gD.rec==='Sí'?'selected':''}>✅ Sí — Listo para operar de forma independiente</option>
+      <option value="Con Supervisión" ${gD.rec==='Con Supervisión'?'selected':''}>🟡 Con Supervisión — Requiere acompañamiento</option>
+      <option value="No" ${gD.rec==='No'?'selected':''}>❌ No — Requiere entrenamiento adicional</option>
     </select>
     <label class="lbl">Plan de refuerzo (si aplica)</label>
-    <textarea rows="2" placeholder="Área y acciones de refuerzo necesarias..." oninput="gData.plan=this.value">${esc(gData.plan)}</textarea>
+    <textarea rows="2" placeholder="Área y acciones de refuerzo..." oninput="gD.plan=this.value">${esc(gD.plan)}</textarea>
   </div>
-  <div class="hint" id="gh">${(!gData.gerente.trim()||!gData.colaborador.trim()||!gData.tienda.trim())?'<span class="hint-txt">Completa: gerente, colaborador y tienda</span>':''}</div>
-  <button class="btn-submit" id="g-btn" onclick="submitGerente()" ${(gData.gerente.trim()&&gData.colaborador.trim()&&gData.tienda.trim()&&fil>0)?'':'disabled'}>
-    <i class="ti ti-device-floppy" style="font-size:15px"></i> Guardar evaluación
-  </button><div style="height:12px"></div>`;
+  <div class="hint" id="gh">${(!gD.gerente.trim()||!gD.tienda.trim())?'<span class="hint-txt">Completa: gerente de tienda y tienda destino</span>':''}</div>
+  <button class="btn-submit" id="g-btn" onclick="submitGer()" ${(gD.gerente.trim()&&gD.tienda.trim()&&f>0)?'':'disabled'}>
+    <i class="ti ti-device-floppy" style="font-size:14px"></i> Guardar evaluación
+  </button>
+  <div style="display:flex;gap:8px;margin-top:8px">
+    <button class="btn-sec" style="flex:1;justify-content:center" onclick="go('home')"><i class="ti ti-home-2" style="font-size:13px"></i> Inicio</button>
+  </div><div style="height:10px"></div>`;
   document.getElementById('ger-body').innerHTML=h;
 }
 
-function gSet(ai,ii,val){
-  gData.ans[ai+'_'+ii]=val;
-  renderGerente();
+function gSetSel(el,ai,ii,ci){
+  const val=el.value;gD.ans[gKey(ai,ii,ci)]=val;
+  el.className='chk-sel'+(val==='dom'?' v-dom':val==='pro'?' v-pro':val==='nod'?' v-nod':'');
+  const {t,f}=gCnt();const pct=t?Math.round(f/t*100):0;
+  document.getElementById('gp-f').style.width=pct+'%';document.getElementById('gp-l').textContent=pct+'%';
   const body=document.getElementById('ga-'+ai);
-  if(body){body.classList.add('open');document.getElementById('gah-'+ai)?.classList.add('open');const ic=document.getElementById('gai-'+ai);if(ic)ic.style.transform='rotate(180deg)';}
+  if(body&&!body.classList.contains('open')){body.classList.add('open');document.getElementById('gah-'+ai)?.classList.add('open');const ic=document.getElementById('gai-'+ai);if(ic)ic.style.transform='rotate(180deg)';}
 }
-function gerUpdateBtn(){
-  const btn=document.getElementById('g-btn');if(!btn)return;
-  const {fil}=gCnt();
-  const can=gData.gerente.trim()&&gData.colaborador.trim()&&gData.tienda.trim()&&fil>0;
-  btn.disabled=!can;
-}
-
-async function submitGerente(){
-  const btn=document.getElementById('g-btn');btn.disabled=true;
-  btn.innerHTML='<i class="ti ti-loader-2" style="animation:spin .8s linear infinite;font-size:15px"></i> Guardando...';
+function gUpBtn(){const btn=document.getElementById('g-btn');if(!btn)return;const {f}=gCnt();btn.disabled=!(gD.gerente.trim()&&gD.tienda.trim()&&f>0);}
+async function submitGer(){
+  const btn=document.getElementById('g-btn');btn.disabled=true;btn.innerHTML='<i class="ti ti-loader-2" style="animation:spin .8s linear infinite;font-size:14px"></i> Guardando...';
   const {dom,pro,nod}=gCnt();
-  await postData({type:'gerente',data:{...gData,domina:dom,proceso:pro,noDomina:nod}});
+  await postData({type:'gerente',data:{...gD,domina:dom,proceso:pro,noDomina:nod,submittedBy:CU?.correo}});
   alert('✅ Evaluación del gerente guardada correctamente.');
-  gData={gerente:'',supervisor:'',colaborador:'',cedula:'',tienda:'',dias:'5',fechaEval:'',ans:{},obs:{},rec:'',plan:''};
-  renderGerente();
+  gD={gerente:'',supervisor:'',c1:'',c2:'',c3:'',tienda:'',dias:'5',fechaEval:'',ans:{},obs:{},rec:'',plan:''};renderGerente();
 }
 
-// ═══════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
 // MÓDULO 4: DASHBOARD
-// ═══════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
 let charts={};
-function destroyCharts(){Object.values(charts).forEach(c=>{try{c.destroy();}catch(e){}});charts={};}
-
+function dC(){Object.values(charts).forEach(c=>{try{c.destroy();}catch(e){}});charts={};}
 async function loadDashboard(){
-  destroyCharts();
-  const body=document.getElementById('dash-body');
-  if(!SURL){
-    renderDashEmpty(body);return;
-  }
-  body.innerHTML=`<div style="text-align:center;padding:48px 0;color:#94A3B8"><i class="ti ti-loader-2" style="font-size:32px;animation:spin .8s linear infinite"></i><div style="margin-top:10px;font-size:13px">Cargando datos...</div></div>`;
+  dC();const body=document.getElementById('dash-body');
+  if(!SURL){body.innerHTML=`<div class="page" style="padding-top:20px"><div class="card" style="text-align:center;padding:28px"><i class="ti ti-database-off" style="font-size:36px;color:#CBD5E1;display:block;margin-bottom:10px"></i><div style="font-size:13px;font-weight:600;margin-bottom:4px">Sin conexión a datos</div><div style="font-size:11px;color:#64748B">Configura la URL del Apps Script para ver resultados</div><button class="btn-sec" style="margin:12px auto 0;display:flex" onclick="showConfig()"><i class="ti ti-settings"></i> Configurar</button></div></div>`;return;}
+  body.innerHTML=`<div style="text-align:center;padding:40px 0;color:#94A3B8"><i class="ti ti-loader-2" style="font-size:28px;animation:spin .8s linear infinite"></i><div style="margin-top:8px;font-size:12px">Cargando datos...</div></div>`;
   try{
-    const r=await fetch(SURL+'?type=dashboard');
+    const r=await fetch(SURL+'?type=dashboard',{cache:'no-cache'});
     const d=await r.json();
-    renderDash(body,d);
-  }catch(e){
-    renderDashEmpty(body,'Error al conectar con Google Sheets. Verifica la URL del Apps Script.');
-  }
+    renderDash(d,body);
+  }catch(e){body.innerHTML=`<div class="page" style="padding-top:20px"><div class="card" style="text-align:center;padding:24px;border:1px solid #FEE2E2"><i class="ti ti-wifi-off" style="font-size:32px;color:#EF4444;display:block;margin-bottom:8px"></i><div style="font-size:13px;font-weight:600;color:#DC2626;margin-bottom:4px">Error al cargar datos</div><div style="font-size:11px;color:#64748B">Verifica la URL del Apps Script y que esté desplegado como App web</div><button class="btn-sec" style="margin:10px auto 0;display:flex" onclick="loadDashboard()"><i class="ti ti-refresh"></i> Reintentar</button></div></div>`;}
 }
-
-function renderDashEmpty(body,msg=''){
-  body.innerHTML=`<div class="page" style="padding-top:24px">
-    <div class="card" style="text-align:center;padding:32px">
-      <i class="ti ti-database-off" style="font-size:40px;color:#CBD5E1;display:block;margin-bottom:12px"></i>
-      <div style="font-size:14px;font-weight:600;color:#1E293B;margin-bottom:6px">${msg||'Sin datos aún'}</div>
-      <div style="font-size:12px;color:#64748B">${SURL?'Completa algunos formularios para ver resultados':'Configura la URL de Apps Script para activar el dashboard'}</div>
-    </div>
-  </div>`;
-}
-
-function renderDash(body,d){
-  const enc=d.encuesta||{total:0,promedio:0,secciones:{},recientes:[]};
-  const inst=d.instructor||{total:0,g1:0,g2:0};
-  const ger=d.gerente||{total:0,avgDomina:0,avgProceso:0,avgNoDomina:0,recientes:[]};
-  const oc=sColor(enc.promedio||0);
-
-  body.innerHTML=`<div class="page" style="padding-top:16px">
+function eSC2(v){if(v>=4.5)return'#1D9E75';if(v>=3.5)return'#639922';if(v>=2.5)return'#888780';if(v>=1.5)return'#EF9F27';return'#E24B4A';}
+function renderDash(d,body){
+  const enc=d.encuesta||{},inst=d.instructor||{},ger=d.gerente||{};
+  const oc=eSC2(enc.promedio||0);
+  body.innerHTML=`<div class="page" style="padding-top:14px">
     <div class="stat-grid">
-      <div class="stat-card"><div class="stat-lbl">Encuestas</div><div class="stat-num" style="color:var(--b)">${enc.total}</div><div style="font-size:10px;color:#94A3B8">colaboradores</div></div>
-      <div class="stat-card"><div class="stat-lbl">Promedio enc.</div><div class="stat-num" style="color:${oc}">${(enc.promedio||0).toFixed(1)}</div><div style="font-size:10px;color:#94A3B8">sobre 5.0</div></div>
-      <div class="stat-card"><div class="stat-lbl">Checklists inst.</div><div class="stat-num" style="color:#16A34A">${inst.total}</div><div style="font-size:10px;color:#94A3B8">G1:${inst.g1} · G2:${inst.g2}</div></div>
-      <div class="stat-card"><div class="stat-lbl">Eval. gerente</div><div class="stat-num" style="color:#EA580C">${ger.total}</div><div style="font-size:10px;color:#94A3B8">evaluaciones</div></div>
+      <div class="stat-card"><div class="stat-lbl">Encuestas</div><div class="stat-num" style="color:var(--b)">${enc.total||0}</div><div style="font-size:9px;color:#94A3B8">colaboradores</div></div>
+      <div class="stat-card"><div class="stat-lbl">Promedio enc.</div><div class="stat-num" style="color:${oc}">${(enc.promedio||0).toFixed(1)}</div><div style="font-size:9px;color:#94A3B8">sobre 5.0</div></div>
+      <div class="stat-card"><div class="stat-lbl">Checklists inst.</div><div class="stat-num" style="color:#16A34A">${inst.total||0}</div><div style="font-size:9px;color:#94A3B8">registrados</div></div>
+      <div class="stat-card"><div class="stat-lbl">Eval. gerente</div><div class="stat-num" style="color:#EA580C">${ger.total||0}</div><div style="font-size:9px;color:#94A3B8">evaluaciones</div></div>
     </div>
-
     <div class="chart-card">
       <div class="chart-ttl"><i class="ti ti-chart-bar" style="color:var(--b)"></i>Promedio por sección — Encuesta</div>
-      <canvas id="ch-sec" height="200"></canvas>
+      <canvas id="ch-sec" height="180"></canvas>
     </div>
-
     <div class="chart-card">
-      <div class="chart-ttl"><i class="ti ti-chart-donut" style="color:#EA580C"></i>Dominio de procesos — Gerente</div>
-      <canvas id="ch-ger" height="180"></canvas>
+      <div class="chart-ttl"><i class="ti ti-chart-donut" style="color:#EA580C"></i>Dominio de procesos — Gerente de Tienda</div>
+      <canvas id="ch-ger" height="160"></canvas>
     </div>
-
-    ${enc.recientes?.length?`<div class="card">
-      <div class="lbl" style="margin-bottom:10px">Últimas encuestas</div>
-      <div style="overflow-x:auto">
-        <table class="tbl">
-          <thead><tr><th>Colaborador</th><th>Tienda</th><th>Área</th><th>Prom.</th></tr></thead>
-          <tbody>${enc.recientes.map(r=>{const c=sColor(r.prom);return`<tr><td>${esc(r.nombre||'')}</td><td>${esc(r.tienda||'')}</td><td>${esc(r.area||'')}</td><td><span class="badge" style="background:${c}22;color:${c}">${(r.prom||0).toFixed(1)}</span></td></tr>`;}).join('')}</tbody>
-        </table>
-      </div>
-    </div>`:''} 
+    ${enc.recientes?.length?`<div class="card"><div class="lbl" style="margin-bottom:9px">Últimas encuestas</div><div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Colaborador</th><th>País</th><th>Tienda</th><th>Prom.</th></tr></thead><tbody>${enc.recientes.map(r=>{const c=eSC2(r.prom);return`<tr><td>${esc(r.nombre||'')}</td><td>${esc(r.pais||'')}</td><td>${esc(r.tienda||'')}</td><td><span class="badge" style="background:${c}22;color:${c}">${(r.prom||0).toFixed(1)}</span></td></tr>`;}).join('')}</tbody></table></div></div>`:''}
   </div>`;
-
-  // Chart: Secciones encuesta
-  const secs=enc.secciones||{};
   setTimeout(()=>{
+    const s=enc.secciones||{};
     const ctx1=document.getElementById('ch-sec')?.getContext('2d');
-    if(ctx1){
-      charts.sec=new Chart(ctx1,{
-        type:'bar',
-        data:{
-          labels:['Experiencia','Procesos','Instructor','Herramientas','Confianza'],
-          datasets:[{data:[secs.experiencia||0,secs.procesos||0,secs.instructor||0,secs.herramientas||0,secs.confianza||0],
-            backgroundColor:['#418FDE','#1D9E75','#639922','#EF9F27','#001E62'].map(c=>c+'CC'),
-            borderColor:['#418FDE','#1D9E75','#639922','#EF9F27','#001E62'],borderWidth:1.5,borderRadius:6}]
-        },
-        options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{min:0,max:5,ticks:{stepSize:1},grid:{color:'#F1F5F9'}},x:{grid:{display:false}}}}
-      });
-    }
+    if(ctx1){charts.sec=new Chart(ctx1,{type:'bar',data:{labels:['Experiencia','Procesos','Instructor','Herramientas','Confianza'],datasets:[{data:[s.experiencia||0,s.procesos||0,s.instructor||0,s.herramientas||0,s.confianza||0],backgroundColor:['#418FDE','#1D9E75','#639922','#EF9F27','#001E62'].map(c=>c+'BB'),borderColor:['#418FDE','#1D9E75','#639922','#EF9F27','#001E62'],borderWidth:1.5,borderRadius:5}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{min:0,max:5,ticks:{stepSize:1},grid:{color:'#F1F5F9'}},x:{grid:{display:false}}}}});}
     const ctx2=document.getElementById('ch-ger')?.getContext('2d');
-    if(ctx2){
-      charts.ger=new Chart(ctx2,{
-        type:'doughnut',
-        data:{
-          labels:['Domina','En Proceso','No Domina'],
-          datasets:[{data:[ger.avgDomina||0,ger.avgProceso||0,ger.avgNoDomina||0],
-            backgroundColor:['#1D9E75','#EF9F27','#E24B4A'],borderWidth:0,hoverOffset:6}]
-        },
-        options:{responsive:true,plugins:{legend:{position:'right',labels:{font:{size:11},boxWidth:12}}}}
-      });
-    }
+    if(ctx2){charts.ger=new Chart(ctx2,{type:'doughnut',data:{labels:['Domina','En Proceso','No Domina'],datasets:[{data:[ger.avgDomina||0,ger.avgProceso||0,ger.avgNoDomina||0],backgroundColor:['#1D9E75','#EF9F27','#E24B4A'],borderWidth:0,hoverOffset:5}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{font:{size:11},boxWidth:11}}}}});}
   },200);
 }
 
-// ═══ UTILS ════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
+// GUÍA DE USO
+// ══════════════════════════════════════════════
+function renderGuide(){
+  document.getElementById('guide-body').innerHTML=`
+  <div class="guide-sec">
+    <div class="guide-ttl"><i class="ti ti-books" style="color:var(--b)"></i>Instrumentos de medición</div>
+    ${[['📋 Checklist Instructor','Certifica el dominio proceso a proceso al cierre de la Farmacia Escuela. El instructor marca ✅ SÍ / 🟡 CON AYUDA / ❌ NO al finalizar cada módulo. Para G1 al cierre del Día 5; para G2 al cierre del Día 10.'],['📊 Checklist Gerente de Tienda','El gerente evalúa a los 5–7 días de llegado el colaborador a la tienda destino. Marca ✅ DOMINA / 🟡 EN PROCESO / ❌ NO DOMINA por área de proceso.'],['📝 Encuesta de satisfacción','Completada por el colaborador al cierre de la Farmacia Escuela. Evalúa la experiencia de formación en 12 preguntas Likert (5 secciones).']].map(([k,v])=>`<div class="guide-row"><div class="guide-key">${k}</div><div class="guide-val">${v}</div></div>`).join('')}
+  </div>
+  <div class="guide-sec">
+    <div class="guide-ttl"><i class="ti ti-user-check" style="color:#16A34A"></i>Flujo del instructor</div>
+    ${[['Paso 1 — Al recibir al colaborador','Completa los datos del instructor y los nombres de los colaboradores. Selecciona el grupo (5, 7 ó 10 días) y las fechas de inicio y fin.'],['Paso 2 — Al finalizar cada día','Marca SÍ / CON AYUDA / NO en cada ítem del proceso que se trabajó. Agrega observaciones cuando sea necesario.'],['Paso 3 — Al cierre de la FE','Verifica que todos los ítems estén marcados. Guarda el checklist. El colaborador completa la encuesta de satisfacción.'],['Paso 4 — Entrega','El checklist completo queda en Google Sheets. Comparte el resumen con RRHH Operaciones y el equipo de capacitación.']].map(([k,v])=>`<div class="guide-row"><div class="guide-key">${k}</div><div class="guide-val">${v}</div></div>`).join('')}
+  </div>
+  <div class="guide-sec">
+    <div class="guide-ttl"><i class="ti ti-building-store" style="color:#EA580C"></i>Flujo del gerente de tienda</div>
+    ${[['Paso 1 — Al recibir al colaborador','El gerente recibe al colaborador que completó la Farmacia Escuela y lo incorpora a la tienda destino.'],['Paso 2 — A los 5–7 días','Completa el checklist marcando DOMINA / EN PROCESO / NO DOMINA en cada proceso por área.'],['Paso 3 — Resumen','Anota los procesos con mayor debilidad y si el colaborador requiere plan de refuerzo. Selecciona la recomendación general.'],['Paso 4 — Entrega','Guarda el checklist. La información queda disponible para comparación G1 vs G2 en el dashboard.']].map(([k,v])=>`<div class="guide-row"><div class="guide-key">${k}</div><div class="guide-val">${v}</div></div>`).join('')}
+  </div>
+  <div class="guide-sec">
+    <div class="guide-ttl"><i class="ti ti-scale" style="color:#7C3AED"></i>Escala de evaluación</div>
+    ${[['✅ SÍ / DOMINA','El colaborador ejecuta el proceso de forma autónoma y correcta, sin necesidad de apoyo.'],['🟡 CON AYUDA / EN PROCESO','El colaborador ejecuta el proceso pero necesita soporte o indicaciones del instructor / supervisor.'],['❌ NO / NO DOMINA','El colaborador no realizó el proceso o lo hace de forma incorrecta. Requiere entrenamiento adicional.']].map(([k,v])=>`<div class="guide-row"><div class="guide-key">${k}</div><div class="guide-val">${v}</div></div>`).join('')}
+  </div>
+  <div class="guide-sec">
+    <div class="guide-ttl"><i class="ti ti-users" style="color:var(--n)"></i>Roles de acceso</div>
+    ${[['Administrador','Acceso completo: todos los módulos, dashboard de analítica y configuración del sistema.'],['Instructor / Gerente (User1)','Acceso a encuesta, checklist de instructor y checklist de gerente de tienda.'],['Colaborador (User)','Solo puede completar y ver sus propias encuestas de satisfacción.']].map(([k,v])=>`<div class="guide-row"><div class="guide-key">${k}</div><div class="guide-val">${v}</div></div>`).join('')}
+  </div>
+  <div style="height:10px"></div>`;
+}
+
+// ══════════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════════
 function toggleAcc(id){
   const body=document.getElementById(id);if(!body)return;
+  const open=body.classList.toggle('open');
   const hid=id.replace('ia-','iah-').replace('ga-','gah-');
   const iid=id.replace('ia-','iai-').replace('ga-','gai-');
-  const open=body.classList.toggle('open');
   document.getElementById(hid)?.classList.toggle('open',open);
   const ic=document.getElementById(iid);if(ic)ic.style.transform=open?'rotate(180deg)':'';
 }
 function toggleObs(id){const el=document.getElementById(id);if(el)el.style.display=el.style.display==='block'?'none':'block';}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+async function postData(payload){
+  if(!SURL){console.warn('Sin URL, dato no guardado');return true;}
+  try{
+    await fetch(SURL,{method:'POST',mode:'no-cors',body:new URLSearchParams({payload:JSON.stringify(payload)})});
+    return true;
+  }catch(e){console.error(e);return false;}
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+(function init(){
+  const saved=sessionStorage.getItem(USER_KEY);
+  if(!SURL){document.getElementById('s-config').classList.add('on');}
+  else if(saved){setUser(JSON.parse(saved));}
+  else{document.getElementById('s-login').classList.add('on');}
+  loadTiendas();
+})();
 </script>
 </body>
 </html>
