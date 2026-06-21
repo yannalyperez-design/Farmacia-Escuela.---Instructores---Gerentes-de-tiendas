@@ -123,12 +123,14 @@ textarea{resize:vertical;min-height:58px}
 .guide-key{font-weight:600;color:#334155;min-width:120px;flex-shrink:0}
 .guide-val{color:#64748B;line-height:1.5}
 /* LOGIN */
-#s-login{background:linear-gradient(150deg,var(--n),#0a3580);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+#s-login{background:linear-gradient(150deg,var(--n),#0a3580);min-height:100vh;align-items:center;justify-content:center;padding:24px}
+#s-login.on{display:flex!important}
 .login-card{background:white;border-radius:18px;padding:28px 24px;max-width:380px;width:100%;box-shadow:0 8px 32px rgba(0,30,98,.25)}
 /* ROLE BADGE */
 .role-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:12px;background:rgba(255,255,255,.15);color:rgba(255,255,255,.85)}
 /* CONFIG */
-#s-config{background:var(--n);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+#s-config{background:var(--n);min-height:100vh;align-items:center;justify-content:center;padding:24px}
+#s-config.on{display:flex!important}
 .cfg-card{background:white;border-radius:16px;padding:26px 22px;max-width:440px;width:100%}
 /* RES BARS */
 .res-bar{margin-bottom:9px}
@@ -183,7 +185,9 @@ textarea{resize:vertical;min-height:58px}
       <p style="font-size:12px;color:#64748B">CENCAP · Gestión de Personas</p>
     </div>
     <label class="lbl">Correo electrónico</label>
-    <input id="login-email" type="email" placeholder="usuario@farmatodo.com" style="margin-bottom:12px" onkeydown="if(event.key==='Enter')doLogin()">
+    <input id="login-email" type="email" placeholder="usuario@farmatodo.com" style="margin-bottom:10px" onkeydown="if(event.key==='Enter')document.getElementById('login-ced').focus()">
+    <label class="lbl">Cédula o DNI</label>
+    <input id="login-ced" type="text" placeholder="Tu cédula (sin la V)" style="margin-bottom:12px" onkeydown="if(event.key==='Enter')doLogin()">
     <button onclick="doLogin()" class="btn-submit" id="login-btn">
       <i class="ti ti-login" style="font-size:15px"></i> Iniciar sesión
     </button>
@@ -319,26 +323,27 @@ const ROLES = {Administrador:'Administrador', User1:'Instructor/Gerente', User:'
 
 async function doLogin(){
   const email = document.getElementById('login-email').value.trim().toLowerCase();
+  const ced = document.getElementById('login-ced').value.trim().replace(/^[vVeE][-.]?/,'');
   if(!email){showLoginErr('Ingresa tu correo');return;}
+  if(!ced){showLoginErr('Ingresa tu cédula');return;}
   const btn=document.getElementById('login-btn');btn.disabled=true;
   btn.innerHTML='<i class="ti ti-loader-2" style="animation:spin .8s linear infinite;font-size:15px"></i> Verificando...';
   document.getElementById('login-err').style.display='none';
 
   if(!SURL){
-    // Demo: asignar admin
     setUser({nombre:'Administrador Demo',correo:email,rol:'Administrador'});
     return;
   }
   try{
-    const r=await fetch(`${SURL}?type=login&email=${encodeURIComponent(email)}`);
+    const r=await fetch(`${SURL}?type=login&email=${encodeURIComponent(email)}&cedula=${encodeURIComponent(ced)}`);
     const d=await r.json();
     if(d.found){setUser(d);}
-    else{showLoginErr(d.message||'Correo no registrado en el sistema');btn.disabled=false;btn.innerHTML='<i class="ti ti-login" style="font-size:15px"></i> Iniciar sesión';}
+    else{showLoginErr(d.message||'Correo o cédula incorrectos');resetLoginBtn();}
   }catch(e){
-    showLoginErr('Error de conexión. Verifica la URL del Apps Script o prueba en modo demo.');
-    btn.disabled=false;btn.innerHTML='<i class="ti ti-login" style="font-size:15px"></i> Iniciar sesión';
+    showLoginErr('Error de conexión. Verifica la URL del Apps Script.');resetLoginBtn();
   }
 }
+function resetLoginBtn(){const b=document.getElementById('login-btn');b.disabled=false;b.innerHTML='<i class="ti ti-login" style="font-size:15px"></i> Iniciar sesión';}
 function showLoginErr(msg){const el=document.getElementById('login-err');el.textContent=msg;el.style.display='block';}
 function setUser(u){
   CU=u;sessionStorage.setItem(USER_KEY,JSON.stringify(u));
@@ -359,6 +364,7 @@ function doLogout(){
   document.getElementById('login-btn').disabled=false;
   document.getElementById('login-btn').innerHTML='<i class="ti ti-login" style="font-size:15px"></i> Iniciar sesión';
   document.getElementById('login-email').value='';
+  const lc=document.getElementById('login-ced');if(lc)lc.value='';
 }
 
 // ══════════════════════════════════════════════
