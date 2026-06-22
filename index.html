@@ -68,6 +68,7 @@ textarea{resize:vertical;min-height:58px}
 .chk-sel.v-si{border-color:var(--g);background:#F0FDF4;color:#15803D;font-weight:600}
 .chk-sel.v-ay{border-color:var(--a);background:#FFF7ED;color:#92400E;font-weight:600}
 .chk-sel.v-no{border-color:var(--r);background:#FEF2F2;color:#991B1B;font-weight:600}
+.chk-sel.v-na{border-color:#94A3B8;background:#F1F5F9;color:#475569;font-weight:600}
 .chk-sel.v-dom{border-color:var(--g);background:#F0FDF4;color:#15803D;font-weight:600}
 .chk-sel.v-pro{border-color:var(--a);background:#FFF7ED;color:#92400E;font-weight:600}
 .chk-sel.v-nod{border-color:var(--r);background:#FEF2F2;color:#991B1B;font-weight:600}
@@ -278,6 +279,17 @@ textarea{resize:vertical;min-height:58px}
 </div>
 
 
+
+<!-- ─── RESPUESTAS ───────────────── -->
+<div id="s-respuestas" class="screen">
+  <div class="topbar">
+    <button onclick="goBack()" class="tb-btn"><i class="ti ti-arrow-left" style="font-size:17px"></i></button>
+    <div style="flex:1;margin-left:8px"><h1>Respuestas registradas</h1><div class="sub">Lo que se ha completado</div></div>
+    <button onclick="loadRespuestas()" class="tb-btn"><i class="ti ti-refresh" style="font-size:16px"></i></button>
+  </div>
+  <div class="page" id="resp-body"><div style="text-align:center;padding:40px 0;color:#94A3B8"><i class="ti ti-loader-2" style="font-size:28px;animation:spin .8s linear infinite"></i></div></div>
+</div>
+
 <!-- ─── ADMIN ───────────────────── -->
 <div id="s-admin" class="screen">
   <div class="topbar">
@@ -412,6 +424,7 @@ function renderHomeCards(){
     {id:'encuesta',lbl:'Encuesta de satisfacción',desc:'Colaborador al cierre de Farmacia Escuela · 12 preguntas',icon:'ti-clipboard-list',bg:'#EFF6FF',ic:var_b,roles:['all']},
     {id:'instructor',lbl:'Checklist Instructor',desc:'Verificación proceso a proceso · D1–D5 o D1–D10 · hasta 3 colaboradores',icon:'ti-checklist',bg:'#F0FDF4',ic:'#16A34A',roles:['Administrador','User1']},
     {id:'gerente',lbl:'Checklist Gerente de Tienda',desc:'Evaluación en tienda destino · DOMINA / EN PROCESO / NO DOMINA',icon:'ti-building-store',bg:'#FFF7ED',ic:'#EA580C',roles:['Administrador','User1']},
+    {id:'respuestas',lbl:'Respuestas registradas',desc:'Ver lo que se ha completado',icon:'ti-list-check',bg:'#ECFEFF',ic:'#0891B2',roles:['all']},
     {id:'dashboard',lbl:'Dashboard de analítica',desc:'Resultados consolidados · dominio de procesos · comparativas',icon:'ti-chart-bar',bg:'#F5F3FF',ic:'#7C3AED',roles:['Administrador']},
     {id:'admin',lbl:'Administración',desc:'Editar textos de la app · ver guía de uso',icon:'ti-settings',bg:'#F1F5F9',ic:'#64748B',roles:['Administrador']},
   ].filter(c=>c.roles.includes('all')||c.roles.includes(rol));
@@ -437,6 +450,7 @@ function go(s,addHist=true){
   if(s==='gerente'&&!gerReady)initGerente();
   if(s==='guide')renderGuide();
   if(s==='admin')renderAdmin();
+  if(s==='respuestas')loadRespuestas();
   if(s==='dashboard')loadDashboard();
   window.scrollTo(0,0);
 }
@@ -755,7 +769,7 @@ function renderInstructor(){
   }
 
   h+=`<div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:7px;padding:8px 11px;margin-bottom:10px;font-size:10px;color:#15803D">
-    <strong>Escala:</strong> ✅ SÍ = Domina autónomamente &nbsp;·&nbsp; 🟡 CON AYUDA = Ejecuta con soporte &nbsp;·&nbsp; ❌ NO = No lo realizó / requiere refuerzo
+    <strong>Escala:</strong> ✅ SÍ = Domina &nbsp;·&nbsp; 🟡 CON AYUDA = Con soporte &nbsp;·&nbsp; ❌ NO = No lo realizó &nbsp;·&nbsp; ⚪ N/A = No aplica
   </div>`;
 
   iDias().forEach(d=>{
@@ -792,6 +806,7 @@ function renderInstructor(){
               <option value="si" ${v==='si'?'selected':''}>✅ SÍ</option>
               <option value="ayuda" ${v==='ayuda'?'selected':''}>🟡 CON AYUDA</option>
               <option value="no" ${v==='no'?'selected':''}>❌ NO</option>
+              <option value="na" ${v==='na'?'selected':''}>⚪ N/A</option>
             </select>
           </div>`;
         });
@@ -818,7 +833,7 @@ function renderInstructor(){
 
 function iSetSel(el,did,si,ii,ci){
   const val=el.value;iD.ans[iKey(did,si,ii,ci)]=val;
-  el.className='chk-sel'+(val==='si'?' v-si':val==='ayuda'?' v-ay':val==='no'?' v-no':'');
+  el.className='chk-sel'+(val==='si'?' v-si':val==='ayuda'?' v-ay':val==='no'?' v-no':val==='na'?' v-na':'');
   const {t,f,pct}=iCnt();
   document.getElementById('ip-f').style.width=pct+'%';document.getElementById('ip-l').textContent=pct+'%';
   // Update accordion badge
@@ -826,10 +841,27 @@ function iSetSel(el,did,si,ii,ci){
   if(body&&!body.classList.contains('open')){body.classList.add('open');document.getElementById('iah-'+did)?.classList.add('open');const ic=document.getElementById('iai-'+did);if(ic)ic.style.transform='rotate(180deg)';}
 }
 
+const IVAL={si:'✅ SÍ',ayuda:'🟡 CON AYUDA',no:'❌ NO',na:'⚪ N/A'};
 async function submitInstr(){
   const btn=document.querySelector('#instr-body .btn-submit');if(btn){btn.disabled=true;btn.innerHTML='<i class="ti ti-loader-2" style="animation:spin .8s linear infinite;font-size:14px"></i> Guardando...';}
-  await postData({type:'instructor',data:{...iD,submittedBy:CU?.correo}});
-  alert('✅ Checklist del instructor guardado correctamente.');
+  // Lista ordenada de preguntas y filas por colaborador
+  const dias=iDias();
+  const preguntas=[];
+  dias.forEach(d=>d.secs.forEach(s=>s.items.forEach(it=>preguntas.push(it))));
+  const pares=[[iD.c1,iD.c1c],[iD.c2,iD.c2c],[iD.c3,iD.c3c]].filter(p=>p[0].trim());
+  const filas=pares.map((par,ci)=>{
+    const resp=[];
+    dias.forEach(d=>d.secs.forEach((s,si)=>s.items.forEach((it,ii)=>{
+      resp.push(IVAL[iD.ans[iKey(d.id,si,ii,ci)]]||'');
+    })));
+    return {nombre:par[0],cedula:par[1]||'',respuestas:resp};
+  });
+  await postData({type:'instructor',data:{
+    instructor:iD.instructor,cedInstr:iD.cedInstr,pais:iD.pais,fe:iD.fe,
+    feIni:iD.feIni,feFin:iD.feFin,grupo:iD.grupo,
+    preguntas,filas,obs:iD.obs,submittedBy:CU?.correo
+  }});
+  alert('✅ Checklist guardado: '+filas.length+' colaborador(es), '+preguntas.length+' procesos cada uno.');
   iD={instructor:'',cedInstr:'',pais:'Venezuela',fe:'',feIni:'',feFin:'',grupo:'5 días',c1:'',c1c:'',c2:'',c2c:'',c3:'',c3c:'',ans:{},obs:{}};
   renderInstructor();
 }
@@ -1020,11 +1052,25 @@ function gSetSel(el,ai,ii,ci){
   if(body&&!body.classList.contains('open')){body.classList.add('open');document.getElementById('gah-'+ai)?.classList.add('open');const ic=document.getElementById('gai-'+ai);if(ic)ic.style.transform='rotate(180deg)';}
 }
 function gUpBtn(){const btn=document.getElementById('g-btn');if(!btn)return;const {f}=gCnt();btn.disabled=!(gD.gerente.trim()&&gD.tienda.trim()&&f>0);}
+const GVAL={dom:'✅ DOMINA',pro:'🟡 EN PROCESO',nod:'❌ NO DOMINA'};
 async function submitGer(){
   const btn=document.getElementById('g-btn');btn.disabled=true;btn.innerHTML='<i class="ti ti-loader-2" style="animation:spin .8s linear infinite;font-size:14px"></i> Guardando...';
-  const {dom,pro,nod}=gCnt();
-  await postData({type:'gerente',data:{...gD,domina:dom,proceso:pro,noDomina:nod,submittedBy:CU?.correo}});
-  alert('✅ Evaluación del gerente guardada correctamente.');
+  const preguntas=[];
+  GREAS.forEach(a=>a.items.forEach(it=>preguntas.push(it)));
+  const pares=[[gD.c1,gD.c1c],[gD.c2,gD.c2c],[gD.c3,gD.c3c]].filter(p=>p[0].trim());
+  const filas=pares.map((par,ci)=>{
+    const resp=[];
+    GREAS.forEach((a,ai)=>a.items.forEach((it,ii)=>{
+      resp.push(GVAL[gD.ans[gKey(ai,ii,ci)]]||'');
+    }));
+    return {nombre:par[0],cedula:par[1]||'',respuestas:resp};
+  });
+  await postData({type:'gerente',data:{
+    gerente:gD.gerente,cedGer:gD.cedGer,gerenteArea:gD.gerenteArea,supervisor:gD.supervisor,
+    pais:gD.pais,tienda:gD.tienda,dias:gD.dias,fechaEval:gD.fechaEval,
+    rec:gD.rec,plan:gD.plan,preguntas,filas,obs:gD.obs,submittedBy:CU?.correo
+  }});
+  alert('✅ Evaluación guardada: '+filas.length+' colaborador(es).');
   gD={gerente:'',cedGer:'',gerenteArea:'',pais:'Venezuela',supervisor:'',c1:'',c1c:'',c2:'',c2c:'',c3:'',c3c:'',tienda:'',dias:'5',fechaEval:'',ans:{},obs:{},rec:'',plan:''};renderGerente();
 }
 
@@ -1059,6 +1105,10 @@ function renderDash(d,body){
       <canvas id="ch-sec" height="180"></canvas>
     </div>
     <div class="chart-card">
+      <div class="chart-ttl"><i class="ti ti-chart-donut" style="color:#16A34A"></i>Dominio de procesos — Instructor (FE)</div>
+      <canvas id="ch-inst" height="160"></canvas>
+    </div>
+    <div class="chart-card">
       <div class="chart-ttl"><i class="ti ti-chart-donut" style="color:#EA580C"></i>Dominio de procesos — Gerente de Tienda</div>
       <canvas id="ch-ger" height="160"></canvas>
     </div>
@@ -1068,6 +1118,8 @@ function renderDash(d,body){
     const s=enc.secciones||{};
     const ctx1=document.getElementById('ch-sec')?.getContext('2d');
     if(ctx1){charts.sec=new Chart(ctx1,{type:'bar',data:{labels:['Experiencia','Procesos','Instructor','Herramientas','Confianza'],datasets:[{data:[s.experiencia||0,s.procesos||0,s.instructor||0,s.herramientas||0,s.confianza||0],backgroundColor:['#418FDE','#1D9E75','#639922','#EF9F27','#001E62'].map(c=>c+'BB'),borderColor:['#418FDE','#1D9E75','#639922','#EF9F27','#001E62'],borderWidth:1.5,borderRadius:5}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{min:0,max:5,ticks:{stepSize:1},grid:{color:'#F1F5F9'}},x:{grid:{display:false}}}}});}
+    const ctxi=document.getElementById('ch-inst')?.getContext('2d');
+    if(ctxi){charts.inst=new Chart(ctxi,{type:'doughnut',data:{labels:['SÍ / Domina','Con Ayuda','No Domina'],datasets:[{data:[inst.si||0,inst.ayuda||0,inst.no||0],backgroundColor:['#1D9E75','#EF9F27','#E24B4A'],borderWidth:0,hoverOffset:5}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{font:{size:11},boxWidth:11}}}}});}
     const ctx2=document.getElementById('ch-ger')?.getContext('2d');
     if(ctx2){charts.ger=new Chart(ctx2,{type:'doughnut',data:{labels:['Domina','En Proceso','No Domina'],datasets:[{data:[ger.avgDomina||0,ger.avgProceso||0,ger.avgNoDomina||0],backgroundColor:['#1D9E75','#EF9F27','#E24B4A'],borderWidth:0,hoverOffset:5}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{font:{size:11},boxWidth:11}}}}});}
   },200);
@@ -1076,6 +1128,48 @@ function renderDash(d,body){
 // ══════════════════════════════════════════════
 // GUÍA DE USO
 // ══════════════════════════════════════════════
+async function loadRespuestas(){
+  const body=document.getElementById('resp-body');
+  if(!SURL){body.innerHTML='<div class="card" style="text-align:center;padding:24px;color:#64748B">Sin conexión a datos</div>';return;}
+  body.innerHTML='<div style="text-align:center;padding:40px 0;color:#94A3B8"><i class="ti ti-loader-2" style="font-size:28px;animation:spin .8s linear infinite"></i></div>';
+  try{
+    const rol=CU?.rol||'User';
+    const r=await fetch(SURL+'?type=respuestas&correo='+encodeURIComponent(CU?.correo||'')+'&rol='+encodeURIComponent(rol),{redirect:'follow',cache:'no-cache'});
+    const d=await r.json();
+    const esAdmin = rol==='Administrador'||rol==='User1';
+    let h='';
+    // Encuestas
+    h+=`<div class="card"><div class="lbl" style="margin-bottom:9px"><i class="ti ti-clipboard-list" style="color:var(--b);margin-right:4px"></i>${esAdmin?'Encuestas':'Mis encuestas'} (${(d.encuestas||[]).length})</div>`;
+    if((d.encuestas||[]).length){
+      h+=`<div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Fecha</th><th>Nombre</th><th>Tienda</th><th>Prom.</th></tr></thead><tbody>`;
+      d.encuestas.forEach(e=>{const c=eSC2(+e.prom||0);h+=`<tr><td style="font-size:10px">${esc((e.fecha||'').split(',')[0])}</td><td>${esc(e.nombre)}</td><td>${esc(e.tienda)}</td><td><span class="badge" style="background:${c}22;color:${c}">${(+e.prom||0).toFixed(1)}</span></td></tr>`;});
+      h+=`</tbody></table></div>`;
+    } else h+='<div style="font-size:12px;color:#94A3B8;padding:6px 0">Aún no hay encuestas registradas.</div>';
+    h+=`</div>`;
+    // Instructor + Gerente (solo admin/user1)
+    if(esAdmin){
+      h+=`<div class="card"><div class="lbl" style="margin-bottom:9px"><i class="ti ti-checklist" style="color:#16A34A;margin-right:4px"></i>Checklists de instructor (${(d.instructor||[]).length})</div>`;
+      if((d.instructor||[]).length){
+        h+=`<div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Fecha</th><th>Colaborador</th><th>Tienda</th><th>Grupo</th></tr></thead><tbody>`;
+        d.instructor.forEach(e=>{h+=`<tr><td style="font-size:10px">${esc((e.fecha||'').split(',')[0])}</td><td>${esc(e.colaborador)}</td><td>${esc(e.tienda)}</td><td>${esc(e.grupo)}</td></tr>`;});
+        h+=`</tbody></table></div>`;
+      } else h+='<div style="font-size:12px;color:#94A3B8;padding:6px 0">Aún no hay checklists.</div>';
+      h+=`</div>`;
+      h+=`<div class="card"><div class="lbl" style="margin-bottom:9px"><i class="ti ti-building-store" style="color:#EA580C;margin-right:4px"></i>Evaluaciones de gerente (${(d.gerente||[]).length})</div>`;
+      if((d.gerente||[]).length){
+        h+=`<div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Fecha</th><th>Colaborador</th><th>Tienda destino</th><th>Recom.</th></tr></thead><tbody>`;
+        d.gerente.forEach(e=>{h+=`<tr><td style="font-size:10px">${esc((e.fecha||'').split(',')[0])}</td><td>${esc(e.colaborador)}</td><td>${esc(e.tienda)}</td><td style="font-size:10px">${esc(e.rec)}</td></tr>`;});
+        h+=`</tbody></table></div>`;
+      } else h+='<div style="font-size:12px;color:#94A3B8;padding:6px 0">Aún no hay evaluaciones.</div>';
+      h+=`</div>`;
+    }
+    h+=`<button class="btn-sec" style="width:100%;justify-content:center" onclick="go('home')"><i class="ti ti-home-2" style="font-size:13px"></i> Inicio</button><div style="height:10px"></div>`;
+    body.innerHTML=h;
+  }catch(e){
+    body.innerHTML='<div class="card" style="text-align:center;padding:24px;color:#DC2626">Error al cargar. <button class="btn-sec" style="margin:10px auto 0;display:flex" onclick="loadRespuestas()">Reintentar</button></div>';
+  }
+}
+
 function renderAdmin(){
   document.getElementById('admin-body').innerHTML=`
   <div class="card">
